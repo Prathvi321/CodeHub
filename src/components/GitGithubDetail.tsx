@@ -8,6 +8,7 @@ interface GitGithubDetailProps {
 
 const pages = [
   "ChatGPT Image Apr 27, 2026, 11_01_58 PM.png",
+  "ChatGPT Image Apr 27, 2026, 11_02_01 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_02_04 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_02_09 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_02_13 PM.png",
@@ -15,7 +16,6 @@ const pages = [
   "ChatGPT Image Apr 27, 2026, 11_02_21 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_03_04 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_10_43 PM.png",
-  "ChatGPT Image Apr 27, 2026, 11_11_15 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_12_42 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_14_18 PM.png",
   "ChatGPT Image Apr 27, 2026, 11_15_04 PM.png",
@@ -94,13 +94,12 @@ export default function GitGithubDetail({ onBack }: GitGithubDetailProps) {
             >
               <div className="relative group">
                 <img
-                  src={`/Git and Github/${img}`}
-                  alt={`Git & GitHub Guide Page ${pages.length - 1 + index}`}
+                  src={encodeURI(`/Git and Github/${img}`)}
+                  alt={`Git & GitHub Guide Page ${index + 1}`}
                   className="w-full h-auto rounded-3xl"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute bottom-6 right-6 px-4 py-2 bg-slate-900/10 backdrop-blur-md rounded-full text-[10px] font-bold text-slate-900/60 transition-opacity opacity-0 group-hover:opacity-100">
-                  Slide {pages.length - 1 + index}
+                  Slide {index + 1}
                 </div>
               </div>
             </motion.div>

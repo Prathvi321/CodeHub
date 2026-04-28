@@ -81,10 +81,9 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
             {/* Visual Diagram: Singly */}
             <div className="bg-slate-50 rounded-2xl p-2 mb-8 border border-slate-100 overflow-hidden">
                <img 
-                 src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?q=80&w=800&auto=format&fit=crop" 
+                 src={encodeURI("/Linked List/a clean educational diagram of a singly linked list on a white background. Show a head pointer pointing to three nodes. Each node should be a rectangle with two fields: data and next. Use arrows to connect the nodes from left to right.png")} 
                  alt="Singly Linked List Diagram" 
                  className="w-full h-auto rounded-xl shadow-sm"
-                 referrerPolicy="no-referrer"
                />
             </div>
 
@@ -116,10 +115,10 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
               </p>
               <div className="bg-white/5 rounded-2xl p-2 mb-4 border border-white/10">
                 <img 
-                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=800&auto=format&fit=crop" 
+                  src={encodeURI("/Linked List/a doubly linked list in a neat educational style. Each node must have three compartments labeled prev, data, and next. Show bidirectional arrows between nodes. Include NULL at both ends. Use three nodes with values 5, 15, and 25.png")} 
                   alt="Doubly Linked List" 
                   className="w-full h-auto rounded-xl opacity-90"
-                  referrerPolicy="no-referrer"
+
                 />
               </div>
             </div>
@@ -142,10 +141,9 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
               <p className="text-xs text-amber-800/70 leading-tight mb-4">Last node points back to the head node. Perfect for round-robin tasks.</p>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=800&auto=format&fit=crop" 
+              src={encodeURI("/Linked List/a circular singly linked list diagram on a white background. Show three nodes connected in a loop, with the last node pointing back to the first node. Use a head pointer and label the nodes 1, 2, and 3. Make the circular arrow very clear.png")} 
               alt="Circular List" 
               className="w-full h-auto rounded-xl border border-amber-200 shadow-sm"
-              referrerPolicy="no-referrer"
             />
           </div>
 
@@ -159,10 +157,9 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
               <p className="text-xs text-rose-800/70 leading-tight mb-4">Uses a special sentinel node to simplify edge cases in insertions.</p>
             </div>
             <img 
-              src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format&fit=crop" 
+              src={encodeURI("/Linked List/a header linked list diagram showing a special header node at the beginning that points to regular data nodes. The header node should be visually different, labeled ‘Header’. Show it pointing to nodes 100, 200, and 300.png")} 
               alt="Header List" 
               className="w-full h-auto rounded-xl border border-rose-200 shadow-sm"
-              referrerPolicy="no-referrer"
             />
           </div>
 
@@ -248,10 +245,10 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
                               <img 
-                                src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=800&auto=format&fit=crop" 
+                                src={encodeURI("/Linked List/a step-by-step educational diagram showing insertion at the beginning of a singly linked list. Show the list before insertion, then a new node being created, then pointer changes, then the final list.png")} 
                                 alt="Insertion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
-                                referrerPolicy="no-referrer"
+              
                               />
                            </div>
                            <div className="mt-8 p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl">
@@ -277,10 +274,10 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
                               <img 
-                                src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop" 
+                                src={encodeURI("/Linked List/a clean instructional diagram showing deletion of a middle node from a singly linked list. Show the list before deletion, highlight the node to delete in red or a different shade, then show pointer bypassing it, and finally the updated list.png")} 
                                 alt="Deletion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
-                                referrerPolicy="no-referrer"
+              
                               />
                            </div>
                            <div className="mt-8 p-4 bg-rose-500/5 border border-rose-500/20 rounded-2xl">
@@ -304,10 +301,10 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
                               <img 
-                                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop" 
+                                src={encodeURI("/Linked List/a step-by-step linked list reversal diagram. Show a singly linked list 10 -> 20 -> 30 -> NULL. Then illustrate pointer changes using prev, current, and next pointers. Show the final reversed list as 30 -> 20 -> 10 -> NULL.png")} 
                                 alt="Reversal Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
-                                referrerPolicy="no-referrer"
+              
                               />
                            </div>
                            <div className="flex gap-3 mt-10">
@@ -358,10 +355,10 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
              </div>
              <div className="p-4 bg-slate-50 rounded-2xl flex flex-col items-center justify-center gap-4">
                 <img 
-                  src="https://images.unsplash.com/photo-1523961123396-d9a940bb6770?q=80&w=800&auto=format&fit=crop" 
+                  src={encodeURI("/Linked List/a circular doubly linked list diagram in a clean educational style. Show nodes with prev, data, and next fields. Make arrows go both forward and backward between nodes, and show the last node linking back to the first node, forming a loop.png")} 
                   alt="Circular Doubly Linked List" 
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm mb-2"
-                  referrerPolicy="no-referrer"
+
                 />
                 <div className="flex items-center gap-4 w-full">
                   <div className="w-3 h-3 rounded-full bg-indigo-500 animate-pulse" />

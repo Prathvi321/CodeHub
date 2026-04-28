@@ -1,0 +1,924 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:var(--color-background-primary);
+--bg2:var(--color-background-secondary);
+--bg3:var(--color-background-tertiary);
+--t:var(--color-text-primary);
+--t2:var(--color-text-secondary);
+--b:var(--color-border-tertiary);
+--b2:var(--color-border-secondary);
+--accent:#4F46E5;
+--accent2:#7C3AED;
+--green:#059669;
+--amber:#D97706;
+--red:#DC2626;
+--teal:#0891B2;
+--mono:'JetBrains Mono',monospace;
+}
+body{font-family:'Space Grotesk',sans-serif;color:var(--t);line-height:1.6;background:transparent}
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 40%,#4338ca 100%);border-radius:16px;padding:40px 36px;margin-bottom:32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(99,102,241,.2)}
+.hero::after{content:'';position:absolute;bottom:-40px;left:20px;width:140px;height:140px;border-radius:50%;background:rgba(167,139,250,.15)}
+.hero-tag{display:inline-block;background:rgba(165,180,252,.15);border:1px solid rgba(165,180,252,.3);color:#a5b4fc;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.hero h1{font-size:2.2rem;font-weight:600;color:#fff;line-height:1.2;margin-bottom:10px;position:relative;z-index:1}
+.hero p{color:#c7d2fe;font-size:15px;max-width:520px;position:relative;z-index:1}
+.hero-badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
+.hbadge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:#e0e7ff;font-size:12px;padding:4px 12px;border-radius:20px}
+
+.toc{background:var(--bg2);border:0.5px solid var(--b);border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.toc-title{font-size:13px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px}
+.toc-item{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;cursor:pointer;transition:background .15s;font-size:13px;color:var(--t2);text-decoration:none}
+.toc-item:hover{background:var(--bg3);color:var(--t)}
+.toc-dot{width:6px;height:6px;border-radius:50%;background:#818cf8;flex-shrink:0}
+
+.section{margin-bottom:36px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.sec-num{width:32px;height:32px;border-radius:8px;background:#312e81;color:#a5b4fc;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec-title{font-size:1.15rem;font-weight:600;color:var(--t)}
+.subsec{margin-bottom:24px}
+.subsec-title{font-size:1rem;font-weight:600;color:var(--t);margin-bottom:10px;padding-left:12px;border-left:3px solid #4F46E5}
+
+p{font-size:14px;color:var(--t2);line-height:1.75;margin-bottom:10px}
+strong{color:var(--t);font-weight:500}
+
+.callout{border-radius:10px;padding:14px 16px;margin:14px 0;font-size:13px;line-height:1.6}
+.callout.info{background:rgba(79,70,229,.08);border-left:3px solid #4F46E5;color:var(--t2)}
+.callout.tip{background:rgba(5,150,105,.08);border-left:3px solid #059669;color:var(--t2)}
+.callout.warn{background:rgba(217,119,6,.08);border-left:3px solid #D97706;color:var(--t2)}
+.callout b{color:var(--t)}
+
+.vis-box{background:var(--bg2);border:0.5px solid var(--b);border-radius:12px;padding:20px;margin:16px 0;overflow-x:auto}
+.vis-label{font-size:11px;font-weight:500;color:var(--t2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+
+.node-row{display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow-x:auto;padding:8px 0}
+.ll-node{display:flex;border:1.5px solid #4F46E5;border-radius:8px;overflow:hidden;flex-shrink:0}
+.ll-node .data{background:#312e81;color:#c7d2fe;font-family:var(--mono);font-size:13px;font-weight:500;padding:10px 14px;min-width:44px;text-align:center}
+.ll-node .ptr{background:#1e1b4b;color:#818cf8;font-family:var(--mono);font-size:11px;padding:10px 10px;min-width:36px;text-align:center;border-left:1px solid rgba(99,102,241,.4)}
+.ll-node.null-node .data{background:#1f2937;color:#6b7280;border-color:#374151}
+.ll-node.null-node{border-color:#374151}
+.ll-arrow{color:#4F46E5;font-size:20px;padding:0 4px;flex-shrink:0;line-height:1;display:flex;align-items:center}
+.head-ptr{font-size:11px;color:#818cf8;font-family:var(--mono);text-align:center;margin-bottom:4px}
+.node-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+
+.dll-node{display:flex;border:1.5px solid #7C3AED;border-radius:8px;overflow:hidden;flex-shrink:0}
+.dll-node .prev{background:#2d1b69;color:#a78bfa;font-family:var(--mono);font-size:11px;padding:10px 8px;min-width:32px;text-align:center;border-right:1px solid rgba(124,58,237,.4)}
+.dll-node .data{background:#3b0764;color:#c4b5fd;font-family:var(--mono);font-size:13px;font-weight:500;padding:10px 14px;min-width:44px;text-align:center}
+.dll-node .nxt{background:#2d1b69;color:#a78bfa;font-family:var(--mono);font-size:11px;padding:10px 8px;min-width:32px;text-align:center;border-left:1px solid rgba(124,58,237,.4)}
+.dll-arrow-pair{display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 4px;flex-shrink:0}
+.dll-arrow-pair span{font-size:13px;line-height:1}
+
+.circ-note{font-size:12px;color:#818cf8;font-family:var(--mono);padding:6px 12px;background:rgba(79,70,229,.1);border-radius:6px;margin-top:8px;display:inline-block}
+
+pre{background:#0f0a1e;border-radius:10px;border:0.5px solid rgba(99,102,241,.2);overflow-x:auto;margin:12px 0}
+pre code{font-family:var(--mono);font-size:12.5px;line-height:1.8;display:block;padding:18px 20px;color:#e2e8f0}
+.kw{color:#c084fc}.fn{color:#60a5fa}.st{color:#86efac}.cm{color:#475569;font-style:italic}.nm{color:#f9a8d4}.op{color:#f472b6}.num{color:#fb923c}
+
+.table-wrap{overflow-x:auto;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#1e1b4b;color:#a5b4fc;font-weight:500;padding:10px 14px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+td{padding:10px 14px;border-bottom:0.5px solid var(--b);color:var(--t2)}
+tr:hover td{background:var(--bg2)}
+td:first-child{font-weight:500;color:var(--t);font-family:var(--mono);font-size:12px}
+.complexity-badge{display:inline-block;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;font-family:var(--mono)}
+.o1{background:rgba(5,150,105,.15);color:#059669}
+.on{background:rgba(217,119,6,.15);color:#D97706}
+
+.adv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.adv-card{border-radius:10px;padding:14px;font-size:13px}
+.adv-card.green{background:rgba(5,150,105,.08);border:0.5px solid rgba(5,150,105,.2)}
+.adv-card.red{background:rgba(220,38,38,.08);border:0.5px solid rgba(220,38,38,.2)}
+.adv-card h4{font-size:12px;font-weight:500;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.adv-card.green h4{color:#059669}
+.adv-card.red h4{color:#DC2626}
+.adv-card ul{list-style:none;padding:0}
+.adv-card li{padding:3px 0;color:var(--t2);display:flex;gap:6px;align-items:flex-start}
+.adv-card.green li::before{content:'✓';color:#059669;flex-shrink:0}
+.adv-card.red li::before{content:'✗';color:#DC2626;flex-shrink:0}
+
+.types-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:14px 0}
+.type-card{border-radius:10px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .2s;border:0.5px solid var(--b)}
+.type-card:hover{transform:translateY(-2px);border-color:#4F46E5}
+.type-card .icon{font-size:22px;margin-bottom:6px}
+.type-card h4{font-size:12px;font-weight:600;color:var(--t);margin-bottom:4px}
+.type-card p{font-size:11px;color:var(--t2);margin:0}
+
+.ops-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.op-tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--b);color:var(--t2);background:transparent;transition:all .15s}
+.op-tab.active{background:#312e81;color:#a5b4fc;border-color:#4F46E5}
+.op-content{display:none}
+.op-content.active{display:block}
+
+.step-vis{margin:12px 0}
+.step{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.step-num{width:22px;height:22px;border-radius:50%;background:#312e81;color:#a5b4fc;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step-text{font-size:13px;color:var(--t2);line-height:1.5}
+.step-text strong{color:var(--t)}
+
+.img-prompt-box{border:1.5px dashed rgba(99,102,241,.4);border-radius:10px;padding:16px;margin:14px 0;background:rgba(79,70,229,.04)}
+.img-prompt-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:#818cf8;margin-bottom:8px}
+.img-prompt-text{font-size:12.5px;color:var(--t2);font-style:italic;line-height:1.6}
+
+.app-pills{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.app-pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;background:var(--bg2);border:0.5px solid var(--b);color:var(--t2)}
+
+hr.divider{border:none;border-top:0.5px solid var(--b);margin:32px 0}
+
+.prog-anim{position:relative;height:60px;margin:16px 0}
+.prog-node{position:absolute;width:48px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:500;color:#c7d2fe;background:#312e81;border:1.5px solid #4F46E5;transition:all .3s}
+.prog-arr{position:absolute;top:50%;transform:translateY(-50%);font-size:18px;color:#4F46E5}
+</style>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Data Structures · CS Engineering</div>
+  <h1>Linked Lists</h1>
+  <p>From fundamentals to advanced operations — with Python code, visual diagrams, and exam-ready notes.</p>
+  <div class="hero-badges">
+    <span class="hbadge">Singly Linked List</span>
+    <span class="hbadge">Doubly Linked List</span>
+    <span class="hbadge">Circular Lists</span>
+    <span class="hbadge">All Operations</span>
+    <span class="hbadge">Python Code</span>
+    <span class="hbadge">Time Complexity</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-title">Contents</div>
+  <div class="toc-grid">
+    <a class="toc-item" href="#s1"><span class="toc-dot"></span>What is a Linked List?</a>
+    <a class="toc-item" href="#s2"><span class="toc-dot"></span>Node Structure</a>
+    <a class="toc-item" href="#s3"><span class="toc-dot"></span>Memory Representation</a>
+    <a class="toc-item" href="#s4"><span class="toc-dot"></span>Array vs Linked List</a>
+    <a class="toc-item" href="#s5"><span class="toc-dot"></span>Types of Linked Lists</a>
+    <a class="toc-item" href="#s6"><span class="toc-dot"></span>All Operations</a>
+    <a class="toc-item" href="#s7"><span class="toc-dot"></span>Advanced Concepts</a>
+    <a class="toc-item" href="#s8"><span class="toc-dot"></span>Complexity Table</a>
+    <a class="toc-item" href="#s9"><span class="toc-dot"></span>Applications</a>
+    <a class="toc-item" href="#s10"><span class="toc-dot"></span>Image Prompts</a>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section" id="s1">
+  <div class="sec-head"><div class="sec-num">1</div><div class="sec-title">What is a Linked List?</div></div>
+  <p>A <strong>linked list</strong> is a linear data structure made up of individual units called <strong>nodes</strong>. Unlike arrays, the elements are not stored in contiguous memory. Instead, each node stores a reference (pointer) to the next node, forming a chain-like structure.</p>
+  <div class="callout info"><b>Key Idea:</b> Each node knows where the next node lives in memory. The connection is logical, not physical.</div>
+
+  <div class="vis-box">
+    <div class="vis-label">Visual — Basic Singly Linked List</div>
+    <div class="node-row">
+      <div class="node-wrap">
+        <div class="head-ptr">HEAD</div>
+        <div class="ll-node"><div class="data">10</div><div class="ptr">→</div></div>
+      </div>
+      <div class="ll-arrow">→</div>
+      <div class="ll-node"><div class="data">20</div><div class="ptr">→</div></div>
+      <div class="ll-arrow">→</div>
+      <div class="ll-node"><div class="data">30</div><div class="ptr">→</div></div>
+      <div class="ll-arrow">→</div>
+      <div class="ll-node null-node"><div class="data">NULL</div></div>
+    </div>
+  </div>
+
+  <div class="img-prompt-box">
+    <div class="img-prompt-label">🎨 Image Generation Prompt</div>
+    <div class="img-prompt-text">"A clean textbook-style diagram of a singly linked list on a white background. A HEAD pointer points to the first of three rectangular nodes. Each node is divided into two sections: DATA (holding values 10, 20, 30) and NEXT (holding a pointer arrow). Arrows connect each node to the next, with the last NEXT field pointing to NULL. Use dark indigo for the node borders and a soft blue-purple fill. Label everything clearly. Minimal, editorial diagram style."</div>
+  </div>
+  <p><strong>Why use Linked Lists?</strong> When data changes frequently — elements are inserted or deleted often — linked lists outperform arrays because no element-shifting is needed.</p>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 2 -->
+<div class="section" id="s2">
+  <div class="sec-head"><div class="sec-num">2</div><div class="sec-title">Node Structure in Python</div></div>
+  <p>In Python, a node is represented as a class with two attributes: <strong>data</strong> (the value) and <strong>next</strong> (a reference to the next node).</p>
+<pre><code><span class="cm"># Basic Node Class</span>
+<span class="kw">class</span> <span class="fn">Node</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>, data):
+        <span class="nm">self</span>.data = data        <span class="cm"># stores the value</span>
+        <span class="nm">self</span>.next = <span class="kw">None</span>       <span class="cm"># pointer to next node (None = NULL)</span>
+
+<span class="cm"># Creating nodes</span>
+n1 = <span class="fn">Node</span>(<span class="num">10</span>)
+n2 = <span class="fn">Node</span>(<span class="num">20</span>)
+n3 = <span class="fn">Node</span>(<span class="num">30</span>)
+
+<span class="cm"># Linking nodes manually</span>
+n1.next = n2   <span class="cm"># 10 → 20</span>
+n2.next = n3   <span class="cm"># 20 → 30</span>
+<span class="cm"># n3.next remains None → 30 → NULL</span>
+
+head = n1      <span class="cm"># head points to the first node</span>
+</code></pre>
+  <div class="img-prompt-box">
+    <div class="img-prompt-label">🎨 New Image Prompt — Memory Addresses</div>
+    <div class="img-prompt-text">"An educational diagram showing three linked list nodes stored at non-contiguous memory addresses (e.g., 0x100, 0x258, 0x3A4). Each node box contains a DATA field and a NEXT field holding the memory address of the next node. Arrows link the nodes. The last node has NEXT = NULL. Style: dark background with neon-teal text and address labels, like a memory inspector view."</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 3 -->
+<div class="section" id="s3">
+  <div class="sec-head"><div class="sec-num">3</div><div class="sec-title">Memory Representation</div></div>
+  <p>Nodes can reside <strong>anywhere</strong> in memory. The link (pointer) in each node bridges the physical gap. This is the fundamental difference from arrays.</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Feature</th><th>Array</th><th>Linked List</th></tr>
+      <tr><td>Memory layout</td><td>Contiguous blocks</td><td>Scattered anywhere</td></tr>
+      <tr><td>Access</td><td>Direct (index)</td><td>Sequential (traverse)</td></tr>
+      <tr><td>Size</td><td>Fixed at creation</td><td>Dynamic (grows/shrinks)</td></tr>
+      <tr><td>Insertion</td><td>Costly (shift elements)</td><td>Cheap (adjust pointers)</td></tr>
+    </table>
+  </div>
+  <div class="adv-grid">
+    <div class="adv-card green">
+      <h4>Advantages</h4>
+      <ul>
+        <li>Dynamic — no fixed size limit</li>
+        <li>Fast insertion &amp; deletion</li>
+        <li>No memory wastage from preallocation</li>
+        <li>Base for stacks, queues, graphs</li>
+      </ul>
+    </div>
+    <div class="adv-card red">
+      <h4>Disadvantages</h4>
+      <ul>
+        <li>No direct/random access</li>
+        <li>Extra memory for pointers</li>
+        <li>Slow sequential traversal</li>
+        <li>More complex to implement</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 4: TYPES -->
+<div class="section" id="s5">
+  <div class="sec-head"><div class="sec-num">4</div><div class="sec-title">Types of Linked Lists</div></div>
+
+  <!-- SINGLY -->
+  <div class="subsec">
+    <div class="subsec-title">4.1 Singly Linked List</div>
+    <p>Each node has <strong>one pointer</strong> — to the next node. Traversal is one-directional (forward only). The last node points to <strong>None</strong>.</p>
+    <div class="vis-box">
+      <div class="vis-label">Singly Linked List</div>
+      <div class="node-row">
+        <div class="node-wrap"><div class="head-ptr">HEAD</div><div class="ll-node"><div class="data">5</div><div class="ptr">→</div></div></div>
+        <div class="ll-arrow">→</div>
+        <div class="ll-node"><div class="data">15</div><div class="ptr">→</div></div>
+        <div class="ll-arrow">→</div>
+        <div class="ll-node"><div class="data">25</div><div class="ptr">→</div></div>
+        <div class="ll-arrow">→</div>
+        <div class="ll-node null-node"><div class="data">None</div></div>
+      </div>
+    </div>
+<pre><code><span class="kw">class</span> <span class="fn">SinglyLinkedList</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>):
+        <span class="nm">self</span>.head = <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="fn">insert_at_beginning</span>(<span class="nm">self</span>, data):
+        new_node = <span class="fn">Node</span>(data)
+        new_node.next = <span class="nm">self</span>.head  <span class="cm"># point new node to old head</span>
+        <span class="nm">self</span>.head = new_node        <span class="cm"># update head</span>
+
+    <span class="kw">def</span> <span class="fn">insert_at_end</span>(<span class="nm">self</span>, data):
+        new_node = <span class="fn">Node</span>(data)
+        <span class="kw">if not</span> <span class="nm">self</span>.head:
+            <span class="nm">self</span>.head = new_node
+            <span class="kw">return</span>
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp.next:       <span class="cm"># traverse to last node</span>
+            temp = temp.next
+        temp.next = new_node   <span class="cm"># attach new node</span>
+
+    <span class="kw">def</span> <span class="fn">display</span>(<span class="nm">self</span>):
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp:
+            <span class="fn">print</span>(temp.data, end=<span class="st">" → "</span>)
+            temp = temp.next
+        <span class="fn">print</span>(<span class="st">"None"</span>)
+</code></pre>
+  </div>
+
+  <!-- DOUBLY -->
+  <div class="subsec">
+    <div class="subsec-title">4.2 Doubly Linked List</div>
+    <p>Each node stores <strong>two pointers</strong> — to both the previous and next node. Enables <strong>bidirectional traversal</strong>. Used in browser history, undo/redo, music playlists.</p>
+    <div class="vis-box">
+      <div class="vis-label">Doubly Linked List — bidirectional links</div>
+      <div class="node-row">
+        <div class="dll-node"><div class="prev">None</div><div class="data">5</div><div class="nxt">→</div></div>
+        <div class="dll-arrow-pair"><span>→</span><span>←</span></div>
+        <div class="dll-node"><div class="prev">←</div><div class="data">15</div><div class="nxt">→</div></div>
+        <div class="dll-arrow-pair"><span>→</span><span>←</span></div>
+        <div class="dll-node"><div class="prev">←</div><div class="data">25</div><div class="nxt">None</div></div>
+      </div>
+    </div>
+<pre><code><span class="kw">class</span> <span class="fn">DNode</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>, data):
+        <span class="nm">self</span>.data = data
+        <span class="nm">self</span>.prev = <span class="kw">None</span>   <span class="cm"># pointer to previous node</span>
+        <span class="nm">self</span>.next = <span class="kw">None</span>   <span class="cm"># pointer to next node</span>
+
+<span class="kw">class</span> <span class="fn">DoublyLinkedList</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>):
+        <span class="nm">self</span>.head = <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="fn">insert_at_end</span>(<span class="nm">self</span>, data):
+        new_node = <span class="fn">DNode</span>(data)
+        <span class="kw">if not</span> <span class="nm">self</span>.head:
+            <span class="nm">self</span>.head = new_node
+            <span class="kw">return</span>
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp.next:
+            temp = temp.next
+        temp.next = new_node   <span class="cm"># link forward</span>
+        new_node.prev = temp   <span class="cm"># link backward</span>
+
+    <span class="kw">def</span> <span class="fn">display_forward</span>(<span class="nm">self</span>):
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp:
+            <span class="fn">print</span>(temp.data, end=<span class="st">" ⇄ "</span>)
+            temp = temp.next
+
+    <span class="kw">def</span> <span class="fn">display_backward</span>(<span class="nm">self</span>):
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp.next:       <span class="cm"># go to last node</span>
+            temp = temp.next
+        <span class="kw">while</span> temp:            <span class="cm"># traverse backwards</span>
+            <span class="fn">print</span>(temp.data, end=<span class="st">" ⇄ "</span>)
+            temp = temp.prev
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 Image Prompt — Doubly Linked List</div>
+      <div class="img-prompt-text">"A clean educational doubly linked list diagram. Each node has 3 sections: PREV (left), DATA (center), NEXT (right). Three nodes with values 5, 15, 25. Bidirectional arrows between nodes. The first node's PREV = None, last node's NEXT = None. Purple color scheme with clear labels. Textbook style, white background."</div>
+    </div>
+  </div>
+
+  <!-- CIRCULAR SINGLY -->
+  <div class="subsec">
+    <div class="subsec-title">4.3 Circular Singly Linked List</div>
+    <p>The <strong>last node's next pointer</strong> points back to the <strong>head</strong> instead of None. There is no null terminator. Great for round-robin scheduling and cyclic applications.</p>
+    <div class="vis-box">
+      <div class="vis-label">Circular Singly — last node links back to head</div>
+      <div class="node-row">
+        <div class="node-wrap"><div class="head-ptr">HEAD</div><div class="ll-node"><div class="data">1</div><div class="ptr">→</div></div></div>
+        <div class="ll-arrow">→</div>
+        <div class="ll-node"><div class="data">2</div><div class="ptr">→</div></div>
+        <div class="ll-arrow">→</div>
+        <div class="ll-node"><div class="data">3</div><div class="ptr">↩</div></div>
+      </div>
+      <div class="circ-note">↩ Node 3's next → points back to Node 1 (HEAD)</div>
+    </div>
+<pre><code><span class="kw">class</span> <span class="fn">CircularSinglyLinkedList</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>):
+        <span class="nm">self</span>.head = <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="fn">insert_at_end</span>(<span class="nm">self</span>, data):
+        new_node = <span class="fn">Node</span>(data)
+        <span class="kw">if not</span> <span class="nm">self</span>.head:
+            <span class="nm">self</span>.head = new_node
+            new_node.next = <span class="nm">self</span>.head   <span class="cm"># point to itself</span>
+            <span class="kw">return</span>
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp.next != <span class="nm">self</span>.head:  <span class="cm"># stop at last node</span>
+            temp = temp.next
+        temp.next = new_node
+        new_node.next = <span class="nm">self</span>.head       <span class="cm"># close the circle</span>
+
+    <span class="kw">def</span> <span class="fn">display</span>(<span class="nm">self</span>):
+        <span class="kw">if not</span> <span class="nm">self</span>.head: <span class="kw">return</span>
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while True</span>:
+            <span class="fn">print</span>(temp.data, end=<span class="st">" → "</span>)
+            temp = temp.next
+            <span class="kw">if</span> temp == <span class="nm">self</span>.head:      <span class="cm"># back to start — stop!</span>
+                <span class="kw">break</span>
+        <span class="fn">print</span>(<span class="st">"(head)"</span>)
+</code></pre>
+    <div class="callout warn"><b>Caution:</b> Always check <code>temp != head</code> as the loop stop condition in circular lists, or you risk an infinite loop.</div>
+  </div>
+
+  <!-- CIRCULAR DOUBLY -->
+  <div class="subsec">
+    <div class="subsec-title">4.4 Circular Doubly Linked List</div>
+    <p>Combines doubly-linked and circular properties. The <strong>last node's next → head</strong> and the <strong>head's prev → last node</strong>. Most powerful — supports bidirectional traversal in a loop.</p>
+<pre><code><span class="kw">class</span> <span class="fn">CircularDoublyLinkedList</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="nm">self</span>):
+        <span class="nm">self</span>.head = <span class="kw">None</span>
+
+    <span class="kw">def</span> <span class="fn">insert_at_end</span>(<span class="nm">self</span>, data):
+        new_node = <span class="fn">DNode</span>(data)
+        <span class="kw">if not</span> <span class="nm">self</span>.head:
+            <span class="nm">self</span>.head = new_node
+            new_node.next = new_node    <span class="cm"># self-loop (next)</span>
+            new_node.prev = new_node    <span class="cm"># self-loop (prev)</span>
+            <span class="kw">return</span>
+        last = <span class="nm">self</span>.head.prev          <span class="cm"># last is head's prev in circular</span>
+        last.next = new_node
+        new_node.prev = last
+        new_node.next = <span class="nm">self</span>.head      <span class="cm"># close forward loop</span>
+        <span class="nm">self</span>.head.prev = new_node       <span class="cm"># close backward loop</span>
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 Image Prompt — Circular Doubly Linked List</div>
+      <div class="img-prompt-text">"A circular doubly linked list diagram. Three nodes with values A, B, C, each having PREV and NEXT fields. Forward arrows: A→B→C→A. Backward arrows: A←B←C←A. Show the circular loop clearly with curved arrows at both ends. Compact, textbook-style with a dark purple accent and white background."</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 6: OPERATIONS -->
+<div class="section" id="s6">
+  <div class="sec-head"><div class="sec-num">5</div><div class="sec-title">All Operations — Python Implementation</div></div>
+  <p>Click an operation to see the visual explanation, step-by-step logic, and Python code.</p>
+
+  <div class="ops-tabs">
+    <button class="op-tab active" onclick="showOp('traversal',this)">Traversal</button>
+    <button class="op-tab" onclick="showOp('insertion',this)">Insertion</button>
+    <button class="op-tab" onclick="showOp('deletion',this)">Deletion</button>
+    <button class="op-tab" onclick="showOp('search',this)">Searching</button>
+    <button class="op-tab" onclick="showOp('reverse',this)">Reversal</button>
+    <button class="op-tab" onclick="showOp('sort',this)">Sorting</button>
+    <button class="op-tab" onclick="showOp('concat',this)">Concat/Split</button>
+  </div>
+
+  <!-- TRAVERSAL -->
+  <div class="op-content active" id="op-traversal">
+    <div class="callout info"><b>Traversal</b> — Visit every node from head to the end. The foundation of all other operations. Time: <strong>O(n)</strong></div>
+    <div class="step-vis">
+      <div class="step"><div class="step-num">1</div><div class="step-text">Set <strong>temp = head</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">While <strong>temp is not None</strong>, visit (print/process) temp.data</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Move: <strong>temp = temp.next</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Repeat until temp becomes None</div></div>
+    </div>
+<pre><code><span class="kw">def</span> <span class="fn">traverse</span>(<span class="nm">self</span>):
+    temp = <span class="nm">self</span>.head
+    count = <span class="num">0</span>
+    <span class="kw">while</span> temp:
+        <span class="fn">print</span>(<span class="st">f"Node {count}: {temp.data}"</span>)
+        temp = temp.next
+        count += <span class="num">1</span>
+    <span class="fn">print</span>(<span class="st">f"Total nodes: {count}"</span>)
+</code></pre>
+  </div>
+
+  <!-- INSERTION -->
+  <div class="op-content" id="op-insertion">
+    <div class="callout tip"><b>Insertion</b> — Add a new node at beginning O(1), end O(n), or a specific position O(n).</div>
+<pre><code><span class="cm"># --- Insert at Beginning: O(1) ---</span>
+<span class="kw">def</span> <span class="fn">insert_beginning</span>(<span class="nm">self</span>, data):
+    new_node = <span class="fn">Node</span>(data)
+    new_node.next = <span class="nm">self</span>.head  <span class="cm"># step 1: connect to old head</span>
+    <span class="nm">self</span>.head = new_node        <span class="cm"># step 2: new node IS head now</span>
+
+<span class="cm"># --- Insert at End: O(n) ---</span>
+<span class="kw">def</span> <span class="fn">insert_end</span>(<span class="nm">self</span>, data):
+    new_node = <span class="fn">Node</span>(data)
+    <span class="kw">if not</span> <span class="nm">self</span>.head:
+        <span class="nm">self</span>.head = new_node
+        <span class="kw">return</span>
+    temp = <span class="nm">self</span>.head
+    <span class="kw">while</span> temp.next:
+        temp = temp.next        <span class="cm"># reach last node</span>
+    temp.next = new_node        <span class="cm"># attach</span>
+
+<span class="cm"># --- Insert at Position: O(n) ---</span>
+<span class="kw">def</span> <span class="fn">insert_at_position</span>(<span class="nm">self</span>, data, pos):
+    <span class="kw">if</span> pos == <span class="num">0</span>:
+        <span class="nm">self</span>.<span class="fn">insert_beginning</span>(data)
+        <span class="kw">return</span>
+    new_node = <span class="fn">Node</span>(data)
+    temp = <span class="nm">self</span>.head
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(pos - <span class="num">1</span>):
+        <span class="kw">if not</span> temp.next:
+            <span class="kw">raise</span> IndexError(<span class="st">"Position out of bounds"</span>)
+        temp = temp.next
+    new_node.next = temp.next   <span class="cm"># bridge: new → what was next</span>
+    temp.next = new_node        <span class="cm"># bridge: prev → new</span>
+
+<span class="cm"># --- Insert After a Given Node ---</span>
+<span class="kw">def</span> <span class="fn">insert_after_node</span>(<span class="nm">self</span>, target_data, new_data):
+    temp = <span class="nm">self</span>.head
+    <span class="kw">while</span> temp:
+        <span class="kw">if</span> temp.data == target_data:
+            new_node = <span class="fn">Node</span>(new_data)
+            new_node.next = temp.next
+            temp.next = new_node
+            <span class="kw">return</span>
+        temp = temp.next
+    <span class="fn">print</span>(<span class="st">"Target not found"</span>)
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Insertion at Position</div>
+      <div class="img-prompt-text">"Step-by-step diagram showing insertion of value 15 between nodes 10 and 20 in a linked list. Step 1: original list 10→20→30. Step 2: new node 15 created. Step 3: new node 15's NEXT = 20, node 10's NEXT = 15. Step 4: final list 10→15→20→30. Use colored arrows for the pointer changes (red for old, green for new). Dark indigo color scheme, white background, educational style."</div>
+    </div>
+  </div>
+
+  <!-- DELETION -->
+  <div class="op-content" id="op-deletion">
+    <div class="callout warn"><b>Deletion</b> — Remove a node by position or value. No element shifting needed — just update pointers. Beginning: O(1), others: O(n).</div>
+<pre><code><span class="cm"># --- Delete from Beginning: O(1) ---</span>
+<span class="kw">def</span> <span class="fn">delete_beginning</span>(<span class="nm">self</span>):
+    <span class="kw">if not</span> <span class="nm">self</span>.head:
+        <span class="kw">return</span>
+    <span class="nm">self</span>.head = <span class="nm">self</span>.head.next    <span class="cm"># move head forward</span>
+
+<span class="cm"># --- Delete from End: O(n) ---</span>
+<span class="kw">def</span> <span class="fn">delete_end</span>(<span class="nm">self</span>):
+    <span class="kw">if not</span> <span class="nm">self</span>.head: <span class="kw">return</span>
+    <span class="kw">if not</span> <span class="nm">self</span>.head.next:
+        <span class="nm">self</span>.head = <span class="kw">None</span>   <span class="cm"># only one node</span>
+        <span class="kw">return</span>
+    temp = <span class="nm">self</span>.head
+    <span class="kw">while</span> temp.next.next:     <span class="cm"># reach second-to-last</span>
+        temp = temp.next
+    temp.next = <span class="kw">None</span>          <span class="cm"># cut off last node</span>
+
+<span class="cm"># --- Delete by Value: O(n) ---</span>
+<span class="kw">def</span> <span class="fn">delete_by_value</span>(<span class="nm">self</span>, key):
+    <span class="kw">if not</span> <span class="nm">self</span>.head: <span class="kw">return</span>
+    <span class="kw">if</span> <span class="nm">self</span>.head.data == key:
+        <span class="nm">self</span>.head = <span class="nm">self</span>.head.next
+        <span class="kw">return</span>
+    temp = <span class="nm">self</span>.head
+    <span class="kw">while</span> temp.next:
+        <span class="kw">if</span> temp.next.data == key:
+            temp.next = temp.next.next  <span class="cm"># bypass the node</span>
+            <span class="kw">return</span>
+        temp = temp.next
+    <span class="fn">print</span>(<span class="st">"Value not found"</span>)
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 Image Prompt — Deletion (Middle Node)</div>
+      <div class="img-prompt-text">"An educational diagram illustrating deletion of a middle node from a linked list. Show the original list 10→20→30. Highlight node 20 in red as the target. Show a dashed line crossing out node 20. Show the new pointer from node 10 directly to node 30 (bypass). Final list: 10→30. Green arrow for the new direct connection. Clean, minimal, dark indigo and white."</div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="op-content" id="op-search">
+    <div class="callout info"><b>Searching</b> — Linear scan from head, compare each node's data. Time: <strong>O(n)</strong>. No random access unlike arrays.</div>
+<pre><code><span class="cm"># --- Linear Search ---</span>
+<span class="kw">def</span> <span class="fn">search</span>(<span class="nm">self</span>, key):
+    temp = <span class="nm">self</span>.head
+    position = <span class="num">0</span>
+    <span class="kw">while</span> temp:
+        <span class="kw">if</span> temp.data == key:
+            <span class="fn">print</span>(<span class="st">f"Found {key} at position {position}"</span>)
+            <span class="kw">return</span> position
+        temp = temp.next
+        position += <span class="num">1</span>
+    <span class="fn">print</span>(<span class="st">f"{key} not found in list"</span>)
+    <span class="kw">return</span> <span class="op">-</span><span class="num">1</span>
+
+<span class="cm"># --- Count nodes ---</span>
+<span class="kw">def</span> <span class="fn">count</span>(<span class="nm">self</span>):
+    temp = <span class="nm">self</span>.head
+    count = <span class="num">0</span>
+    <span class="kw">while</span> temp:
+        count += <span class="num">1</span>
+        temp = temp.next
+    <span class="kw">return</span> count  <span class="cm"># O(n)</span>
+</code></pre>
+  </div>
+
+  <!-- REVERSAL -->
+  <div class="op-content" id="op-reverse">
+    <div class="callout tip"><b>Reversal</b> — Flip all pointers. Uses 3 pointer variables. Time: <strong>O(n)</strong>. Space: <strong>O(1)</strong></div>
+    <div class="step-vis">
+      <div class="step"><div class="step-num">1</div><div class="step-text">Initialize: <strong>prev = None, current = head, next_node = None</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">While current: save next, flip current's pointer backward, advance both pointers</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">At end: <strong>head = prev</strong> (prev is now the last-visited = first of reversed)</div></div>
+    </div>
+<pre><code><span class="cm"># --- Iterative Reversal: O(n) time, O(1) space ---</span>
+<span class="kw">def</span> <span class="fn">reverse</span>(<span class="nm">self</span>):
+    prev = <span class="kw">None</span>
+    current = <span class="nm">self</span>.head
+    <span class="kw">while</span> current:
+        next_node = current.next    <span class="cm"># save next</span>
+        current.next = prev         <span class="cm"># reverse pointer</span>
+        prev = current              <span class="cm"># advance prev</span>
+        current = next_node         <span class="cm"># advance current</span>
+    <span class="nm">self</span>.head = prev               <span class="cm"># prev is new head</span>
+
+<span class="cm"># --- Recursive Reversal: O(n) time, O(n) stack space ---</span>
+<span class="kw">def</span> <span class="fn">reverse_recursive</span>(<span class="nm">self</span>, node):
+    <span class="kw">if not</span> node <span class="kw">or not</span> node.next:
+        <span class="nm">self</span>.head = node
+        <span class="kw">return</span>
+    <span class="nm">self</span>.<span class="fn">reverse_recursive</span>(node.next)
+    node.next.next = node
+    node.next = <span class="kw">None</span>
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 Image Prompt — Reversal using 3 Pointers</div>
+      <div class="img-prompt-text">"Step-by-step diagram of linked list reversal using three pointers: PREV, CURRENT, NEXT. Show initial list 10→20→30→None. Step 1: prev=None, current=10, next=20. Step 2: current points backward to prev. Step 3: all pointers advance. Step 4: final reversed list 30→20→10→None. Color code the three pointers: PREV in orange, CURRENT in blue, NEXT in green. Educational style."</div>
+    </div>
+  </div>
+
+  <!-- SORTING -->
+  <div class="op-content" id="op-sort">
+    <div class="callout info"><b>Sorting</b> — Bubble sort is easiest to implement on linked lists. Merge sort is optimal O(n log n) since it doesn't need random access.</div>
+<pre><code><span class="cm"># --- Bubble Sort on Linked List: O(n²) ---</span>
+<span class="kw">def</span> <span class="fn">bubble_sort</span>(<span class="nm">self</span>):
+    <span class="kw">if not</span> <span class="nm">self</span>.head: <span class="kw">return</span>
+    swapped = <span class="kw">True</span>
+    <span class="kw">while</span> swapped:
+        swapped = <span class="kw">False</span>
+        temp = <span class="nm">self</span>.head
+        <span class="kw">while</span> temp.next:
+            <span class="kw">if</span> temp.data > temp.next.data:
+                <span class="cm"># swap data, not nodes (simpler)</span>
+                temp.data, temp.next.data = temp.next.data, temp.data
+                swapped = <span class="kw">True</span>
+            temp = temp.next
+
+<span class="cm"># --- Merge Sort on Linked List: O(n log n) --- PREFERRED</span>
+<span class="kw">def</span> <span class="fn">merge_sort</span>(head):
+    <span class="kw">if not</span> head <span class="kw">or not</span> head.next:
+        <span class="kw">return</span> head
+    mid = <span class="fn">get_middle</span>(head)
+    right_half = mid.next
+    mid.next = <span class="kw">None</span>           <span class="cm"># split into two halves</span>
+    left = <span class="fn">merge_sort</span>(head)
+    right = <span class="fn">merge_sort</span>(right_half)
+    <span class="kw">return</span> <span class="fn">sorted_merge</span>(left, right)
+
+<span class="kw">def</span> <span class="fn">get_middle</span>(head):
+    slow = fast = head
+    <span class="kw">while</span> fast.next <span class="kw">and</span> fast.next.next:
+        slow = slow.next             <span class="cm"># slow: 1 step</span>
+        fast = fast.next.next        <span class="cm"># fast: 2 steps → slow is mid</span>
+    <span class="kw">return</span> slow
+
+<span class="kw">def</span> <span class="fn">sorted_merge</span>(a, b):
+    <span class="kw">if not</span> a: <span class="kw">return</span> b
+    <span class="kw">if not</span> b: <span class="kw">return</span> a
+    <span class="kw">if</span> a.data <= b.data:
+        a.next = <span class="fn">sorted_merge</span>(a.next, b)
+        <span class="kw">return</span> a
+    <span class="kw">else</span>:
+        b.next = <span class="fn">sorted_merge</span>(a, b.next)
+        <span class="kw">return</span> b
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Merge Sort on Linked List</div>
+      <div class="img-prompt-text">"An educational diagram showing merge sort applied to a linked list 4→2→1→3. Step 1: split into halves using slow-fast pointer technique. Step 2: recursively split until single nodes. Step 3: merge sorted halves back. Final result: 1→2→3→4. Tree-like structure showing recursive splits and merges. Dark background, neon accent colors for the split/merge arrows."</div>
+    </div>
+  </div>
+
+  <!-- CONCAT -->
+  <div class="op-content" id="op-concat">
+    <div class="callout tip"><b>Concatenation & Splitting</b> — Join two lists by linking the tail of the first to the head of the second. Splitting is the reverse — cut at a midpoint.</div>
+<pre><code><span class="cm"># --- Concatenation: O(n) ---</span>
+<span class="kw">def</span> <span class="fn">concatenate</span>(list1_head, list2_head):
+    <span class="kw">if not</span> list1_head: <span class="kw">return</span> list2_head
+    temp = list1_head
+    <span class="kw">while</span> temp.next:           <span class="cm"># find last node of list1</span>
+        temp = temp.next
+    temp.next = list2_head     <span class="cm"># link to head of list2</span>
+    <span class="kw">return</span> list1_head
+
+<span class="cm"># Result: 1→2→3→4→5→6 (list1 + list2 joined)</span>
+
+<span class="cm"># --- Split into Two Halves (slow-fast pointer) ---</span>
+<span class="kw">def</span> <span class="fn">split_list</span>(head):
+    <span class="kw">if not</span> head <span class="kw">or not</span> head.next:
+        <span class="kw">return</span> head, <span class="kw">None</span>
+    slow = head
+    fast = head.next
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    second_half = slow.next
+    slow.next = <span class="kw">None</span>       <span class="cm"># cut the list</span>
+    <span class="kw">return</span> head, second_half
+</code></pre>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 7: ADVANCED -->
+<div class="section" id="s7">
+  <div class="sec-head"><div class="sec-num">6</div><div class="sec-title">Advanced Concepts</div></div>
+
+  <div class="subsec">
+    <div class="subsec-title">Floyd's Cycle Detection (Detect Loop)</div>
+    <p>Use two pointers — <strong>slow</strong> (1 step) and <strong>fast</strong> (2 steps). If they ever meet, a cycle exists.</p>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Floyd's Cycle Detection</div>
+      <div class="img-prompt-text">"An educational diagram illustrating Floyd's Cycle Detection algorithm on a linked list. Show nodes 1→2→3→4→5 where node 5 points back to node 3 (forming a cycle). Show the SLOW pointer (tortoise) moving 1 step and FAST pointer (hare) moving 2 steps simultaneously. Mark their meeting point inside the cycle. Use a tortoise and hare icon metaphor subtly. Dark blue background with amber and teal pointers."</div>
+    </div>
+<pre><code><span class="cm"># --- Floyd's Cycle Detection: O(n) time, O(1) space ---</span>
+<span class="kw">def</span> <span class="fn">detect_cycle</span>(<span class="nm">self</span>):
+    slow = <span class="nm">self</span>.head
+    fast = <span class="nm">self</span>.head
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next         <span class="cm"># 1 step</span>
+        fast = fast.next.next    <span class="cm"># 2 steps</span>
+        <span class="kw">if</span> slow == fast:
+            <span class="fn">print</span>(<span class="st">"Cycle DETECTED!"</span>)
+            <span class="kw">return True</span>
+    <span class="fn">print</span>(<span class="st">"No cycle."</span>)
+    <span class="kw">return False</span>
+
+<span class="cm"># --- Find Start of Cycle ---</span>
+<span class="kw">def</span> <span class="fn">find_cycle_start</span>(<span class="nm">self</span>):
+    slow = fast = <span class="nm">self</span>.head
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        <span class="kw">if</span> slow == fast:
+            slow = <span class="nm">self</span>.head   <span class="cm"># reset slow to head</span>
+            <span class="kw">while</span> slow != fast:
+                slow = slow.next
+                fast = fast.next
+            <span class="kw">return</span> slow.data   <span class="cm"># cycle start node</span>
+    <span class="kw">return None</span>
+</code></pre>
+  </div>
+
+  <div class="subsec">
+    <div class="subsec-title">Find Middle Element (Slow-Fast Pointer)</div>
+<pre><code><span class="kw">def</span> <span class="fn">find_middle</span>(<span class="nm">self</span>):
+    slow = fast = <span class="nm">self</span>.head
+    <span class="kw">while</span> fast <span class="kw">and</span> fast.next:
+        slow = slow.next
+        fast = fast.next.next  <span class="cm"># when fast reaches end, slow is at middle</span>
+    <span class="kw">return</span> slow.data
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Slow-Fast Pointer for Middle</div>
+      <div class="img-prompt-text">"Step-by-step diagram of the slow-fast pointer technique to find the middle of a linked list 1→2→3→4→5. Show the SLOW pointer (single arrow) and FAST pointer (double arrow) at each step. When fast reaches node 5 (end), slow is at node 3 (middle). Color slow in blue, fast in orange. Educational style with step labels."</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <div class="subsec-title">Check if Palindrome</div>
+<pre><code><span class="kw">def</span> <span class="fn">is_palindrome</span>(<span class="nm">self</span>):
+    <span class="cm"># Collect all values</span>
+    values = []
+    temp = <span class="nm">self</span>.head
+    <span class="kw">while</span> temp:
+        values.append(temp.data)
+        temp = temp.next
+    <span class="kw">return</span> values == values[<span class="op">::</span><span class="op">-</span><span class="num">1</span>]  <span class="cm"># compare with reversed</span>
+
+<span class="cm"># Optimal approach: reverse second half and compare in-place (O(1) space)</span>
+<span class="kw">def</span> <span class="fn">is_palindrome_optimal</span>(<span class="nm">self</span>):
+    <span class="kw">if not</span> <span class="nm">self</span>.head <span class="kw">or not</span> <span class="nm">self</span>.head.next: <span class="kw">return True</span>
+    slow = fast = <span class="nm">self</span>.head
+    <span class="kw">while</span> fast.next <span class="kw">and</span> fast.next.next:
+        slow = slow.next
+        fast = fast.next.next
+    <span class="cm"># Reverse second half</span>
+    second_start = slow.next
+    prev = <span class="kw">None</span>
+    <span class="kw">while</span> second_start:
+        nxt = second_start.next
+        second_start.next = prev
+        prev = second_start
+        second_start = nxt
+    <span class="cm"># Compare</span>
+    left, right = <span class="nm">self</span>.head, prev
+    <span class="kw">while</span> right:
+        <span class="kw">if</span> left.data != right.data: <span class="kw">return False</span>
+        left = left.next
+        right = right.next
+    <span class="kw">return True</span>
+</code></pre>
+  </div>
+
+  <div class="subsec">
+    <div class="subsec-title">Nth Node from End (Two Pointer)</div>
+<pre><code><span class="kw">def</span> <span class="fn">nth_from_end</span>(<span class="nm">self</span>, n):
+    <span class="nm">"""Find the Nth node from the end — one pass, two pointers"""</span>
+    first = second = <span class="nm">self</span>.head
+    <span class="kw">for</span> _ <span class="kw">in</span> <span class="fn">range</span>(n):
+        <span class="kw">if not</span> first:
+            <span class="kw">raise</span> ValueError(<span class="st">"N is larger than list length"</span>)
+        first = first.next     <span class="cm"># advance first by N steps</span>
+    <span class="kw">while</span> first:
+        first = first.next
+        second = second.next   <span class="cm"># both advance together</span>
+    <span class="kw">return</span> second.data         <span class="cm"># second is now N from end</span>
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Nth from End (Two Pointers)</div>
+      <div class="img-prompt-text">"Diagram showing how to find the Nth node from the end of a linked list using two pointers. List: 1→2→3→4→5. Find 2nd from end. Step 1: advance FIRST pointer by 2 steps. Step 2: advance both FIRST and SECOND together. Step 3: when FIRST reaches end, SECOND is at node 4 (2nd from end). Color FIRST pointer in orange, SECOND in blue. Clean educational diagram."</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <div class="subsec-title">Intersection of Two Linked Lists</div>
+<pre><code><span class="kw">def</span> <span class="fn">find_intersection</span>(head1, head2):
+    <span class="nm">"""Find where two linked lists merge — O(n+m) time, O(1) space"""</span>
+    a, b = head1, head2
+    <span class="kw">while</span> a != b:
+        a = a.next <span class="kw">if</span> a <span class="kw">else</span> head2  <span class="cm"># switch to other list at end</span>
+        b = b.next <span class="kw">if</span> b <span class="kw">else</span> head1
+    <span class="kw">return</span> a  <span class="cm"># None if no intersection, else the node</span>
+</code></pre>
+    <div class="img-prompt-box">
+      <div class="img-prompt-label">🎨 New Image Prompt — Two List Intersection</div>
+      <div class="img-prompt-text">"Diagram showing intersection of two linked lists. List A: 1→2→3. List B: 4→5. Both lists merge at node 6→7→None. Show the Y-shaped branching where both lists converge at node 6. Teal for list A, coral for list B, purple for the common tail. Educational diagram with clean arrows and labels."</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 8: COMPLEXITY -->
+<div class="section" id="s8">
+  <div class="sec-head"><div class="sec-num">7</div><div class="sec-title">Time & Space Complexity</div></div>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Operation</th><th>Best</th><th>Average</th><th>Worst</th><th>Space</th></tr>
+      <tr><td>Traverse</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Search</td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Insert at Beginning</td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Insert at End</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Insert at Position</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Delete at Beginning</td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Delete at End</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Reverse</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+      <tr><td>Merge Sort</td><td><span class="complexity-badge on">O(n log n)</span></td><td><span class="complexity-badge on">O(n log n)</span></td><td><span class="complexity-badge on">O(n log n)</span></td><td><span class="complexity-badge on">O(log n)</span></td></tr>
+      <tr><td>Cycle Detection</td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge on">O(n)</span></td><td><span class="complexity-badge o1">O(1)</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 9: APPLICATIONS -->
+<div class="section" id="s9">
+  <div class="sec-head"><div class="sec-num">8</div><div class="sec-title">Real-World Applications</div></div>
+  <div class="app-pills">
+    <span class="app-pill">🌐 Browser History (back/forward)</span>
+    <span class="app-pill">🎵 Music Playlists</span>
+    <span class="app-pill">↩ Undo / Redo in editors</span>
+    <span class="app-pill">📦 Stack implementation</span>
+    <span class="app-pill">📬 Queue implementation</span>
+    <span class="app-pill">📊 Graph adjacency lists</span>
+    <span class="app-pill">🔗 Hash table chaining</span>
+    <span class="app-pill">🔄 Round-robin scheduling</span>
+    <span class="app-pill">🧮 Polynomial arithmetic</span>
+    <span class="app-pill">🧩 Sparse matrix storage</span>
+    <span class="app-pill">💾 Memory allocators</span>
+    <span class="app-pill">📝 Text editor cursors</span>
+  </div>
+  <div class="img-prompt-box">
+    <div class="img-prompt-label">🎨 New Image Prompt — Applications Overview</div>
+    <div class="img-prompt-text">"An infographic-style diagram showing real-world applications of linked lists arranged in a clean grid. Each application in a rounded card with an icon and name: Browser History (back arrow icon), Music Playlist (music note), Undo/Redo (curved arrow), Stack/Queue (boxes), Hash Table Chaining (chain links), Round-Robin Scheduling (circular arrows). Dark indigo background, soft glow effect on cards, modern minimal style."</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- SECTION 10: ALL IMAGE PROMPTS SUMMARY -->
+<div class="section" id="s10">
+  <div class="sec-head"><div class="sec-num">9</div><div class="sec-title">Complete Image Prompts Reference</div></div>
+  <div class="callout tip"><b>How to use:</b> Copy each prompt into an AI image generator (DALL·E, Midjourney, Stable Diffusion, etc.). Add "educational, textbook diagram style, white background, no watermark" to any prompt for consistent results.</div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>#</th><th>Topic</th><th>Placement in Notes</th></tr>
+      <tr><td>P1</td><td>Basic Singly Linked List — head, 3 nodes, NULL</td><td>Section 1: Introduction</td></tr>
+      <tr><td>P2</td><td>Memory addresses — scattered nodes with address values</td><td>Section 2: Node Structure</td></tr>
+      <tr><td>P3</td><td>Doubly Linked List — prev/data/next fields</td><td>Section 4.2</td></tr>
+      <tr><td>P4</td><td>Circular Singly — last node → first, no NULL</td><td>Section 4.3</td></tr>
+      <tr><td>P5</td><td>Circular Doubly — bidirectional loop</td><td>Section 4.4</td></tr>
+      <tr><td>P6</td><td>Header Linked List — special header node</td><td>Section 4.5</td></tr>
+      <tr><td>P7</td><td>Insertion at Position — before/after pointer diagrams</td><td>Section 5 – Insertion</td></tr>
+      <tr><td>P8</td><td>Deletion of Middle Node — bypass pointer</td><td>Section 5 – Deletion</td></tr>
+      <tr><td>P9</td><td>Reversal — prev, current, next pointers step-by-step</td><td>Section 5 – Reversal</td></tr>
+      <tr><td>P10</td><td>Merge Sort on Linked List — split/merge tree</td><td>Section 5 – Sorting</td></tr>
+      <tr><td>P11</td><td>Floyd's Cycle Detection — slow/fast pointer loop</td><td>Section 6 – Advanced</td></tr>
+      <tr><td>P12</td><td>Slow-Fast for Middle Element</td><td>Section 6 – Advanced</td></tr>
+      <tr><td>P13</td><td>Nth Node from End — two-pointer technique</td><td>Section 6 – Advanced</td></tr>
+      <tr><td>P14</td><td>Intersection of Two Lists — Y-shaped merge</td><td>Section 6 – Advanced</td></tr>
+      <tr><td>P15</td><td>Applications Overview — infographic grid</td><td>Section 8 – Applications</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+function showOp(name, btn) {
+  document.querySelectorAll('.op-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.op-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('op-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
