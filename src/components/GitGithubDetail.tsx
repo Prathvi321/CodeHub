@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowLeft, Download, Github, BookOpen } from "lucide-react";
 import { motion } from "motion/react";
+import ZoomableImage from "./ZoomableImage";
 
 interface GitGithubDetailProps {
   onBack: () => void;
@@ -93,7 +94,7 @@ export default function GitGithubDetail({ onBack }: GitGithubDetailProps) {
               className="bg-white rounded-[2.5rem] p-4 md:p-8 shadow-xl shadow-slate-200/60 border border-slate-100 overflow-hidden"
             >
               <div className="relative group">
-                <img
+                <ZoomableImage
                   src={encodeURI(`/Git and Github/${img}`)}
                   alt={`Git & GitHub Guide Page ${index + 1}`}
                   className="w-full h-auto rounded-3xl"

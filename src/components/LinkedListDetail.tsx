@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, BookOpen, Clock, Code, Info, Lightbulb, Terminal, AlertTriangle, Search, Layers, ChevronRight, RotateCcw, ArrowRight, Network, Cpu, LayoutGrid } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/src/lib/utils";
+import ZoomableImage from "./ZoomableImage";
 
 interface LinkedListDetailProps {
   onBack: () => void;
@@ -82,7 +83,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
 
             {/* Visual Diagram: Singly */}
             <div className="bg-slate-50 rounded-2xl p-2 mb-8 border border-slate-100 overflow-hidden">
-               <img 
+               <ZoomableImage 
                  src={encodeURI("/Linked List/a clean educational diagram of a singly linked list on a white background. Show a head pointer pointing to three nodes. Each node should be a rectangle with two fields: data and next. Use arrows to connect the nodes from left to right.png")} 
                  alt="Singly Linked List Diagram" 
                  className="w-full h-auto rounded-xl shadow-sm"
@@ -116,7 +117,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                 Ideal for browser history or undo functions.
               </p>
               <div className="bg-white/5 rounded-2xl p-2 mb-4 border border-white/10">
-                <img 
+                <ZoomableImage 
                   src={encodeURI("/Linked List/a doubly linked list in a neat educational style. Each node must have three compartments labeled prev, data, and next. Show bidirectional arrows between nodes. Include NULL at both ends. Use three nodes with values 5, 15, and 25.png")} 
                   alt="Doubly Linked List" 
                   className="w-full h-auto rounded-xl opacity-90"
@@ -142,7 +143,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
               <h3 className="font-bold text-slate-900 mb-1">Circular List</h3>
               <p className="text-xs text-amber-800/70 leading-tight mb-4">Last node points back to the head node. Perfect for round-robin tasks.</p>
             </div>
-            <img 
+            <ZoomableImage 
               src={encodeURI("/Linked List/a circular singly linked list diagram on a white background. Show three nodes connected in a loop, with the last node pointing back to the first node. Use a head pointer and label the nodes 1, 2, and 3. Make the circular arrow very clear.png")} 
               alt="Circular List" 
               className="w-full h-auto rounded-xl border border-amber-200 shadow-sm"
@@ -158,7 +159,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
               <h3 className="font-bold text-slate-900 mb-1">Header List</h3>
               <p className="text-xs text-rose-800/70 leading-tight mb-4">Uses a special sentinel node to simplify edge cases in insertions.</p>
             </div>
-            <img 
+            <ZoomableImage 
               src={encodeURI("/Linked List/a header linked list diagram showing a special header node at the beginning that points to regular data nodes. The header node should be visually different, labeled ‘Header’. Show it pointing to nodes 100, 200, and 300.png")} 
               alt="Header List" 
               className="w-full h-auto rounded-xl border border-rose-200 shadow-sm"
@@ -246,7 +247,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
     self.head = new_node`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Linked List/a step-by-step educational diagram showing insertion at the beginning of a singly linked list. Show the list before insertion, then a new node being created, then pointer changes, then the final list.png")} 
                                 alt="Insertion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -275,7 +276,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
             return`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Linked List/a clean instructional diagram showing deletion of a middle node from a singly linked list. Show the list before deletion, highlight the node to delete in red or a different shade, then show pointer bypassing it, and finally the updated list.png")} 
                                 alt="Deletion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -302,7 +303,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
     current = nxt`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Linked List/a step-by-step linked list reversal diagram. Show a singly linked list 10 -> 20 -> 30 -> NULL. Then illustrate pointer changes using prev, current, and next pointers. Show the final reversed list as 30 -> 20 -> 10 -> NULL.png")} 
                                 alt="Reversal Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -393,7 +394,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                </p>
              </div>
              <div className="p-4 bg-slate-50 rounded-2xl flex flex-col items-center justify-center gap-4">
-                <img 
+                <ZoomableImage 
                   src={encodeURI("/Linked List/a circular doubly linked list diagram in a clean educational style. Show nodes with prev, data, and next fields. Make arrows go both forward and backward between nodes, and show the last node linking back to the first node, forming a loop.png")} 
                   alt="Circular Doubly Linked List" 
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm mb-2"

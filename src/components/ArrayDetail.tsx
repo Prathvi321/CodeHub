@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, BookOpen, Clock, Code, Info, Lightbulb, Terminal, AlertTriangle, Search, Layers, ChevronRight, RotateCcw, ArrowRight, Network, Cpu, LayoutGrid, Box, Database } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/src/lib/utils";
+import ZoomableImage from "./ZoomableImage";
 
 interface ArrayDetailProps {
   onBack: () => void;
@@ -78,7 +79,7 @@ export default function ArrayDetail({ onBack }: ArrayDetailProps) {
             </p>
 
             <div className="bg-slate-50 rounded-2xl p-2 mb-8 border border-slate-100 overflow-hidden">
-               <img 
+               <ZoomableImage 
                  src={encodeURI("/Array/A horizontal memory layout showing contiguous blocks labeled arr[0] to arr[4] with values 10, 20, 30, 40, 50, arrows indicating index positions, clean educational diagram.png")} 
                  alt="1D Array Layout" 
                  className="w-full h-auto rounded-xl shadow-sm"
@@ -111,7 +112,7 @@ export default function ArrayDetail({ onBack }: ArrayDetailProps) {
                 Address calculation: <code>Address = Base + (i * size)</code>. Allows for O(1) random access by computing exact memory location.
               </p>
               <div className="bg-white/5 rounded-2xl p-2 mb-4 border border-white/10">
-                <img 
+                <ZoomableImage 
                   src={encodeURI("/Array/Memory blocks with base address and offsets showing how arr[i] is calculated using base + i * size, low-level memory diagram.png")} 
                   alt="Memory Layout" 
                   className="w-full h-auto rounded-xl opacity-90"
@@ -129,7 +130,7 @@ export default function ArrayDetail({ onBack }: ArrayDetailProps) {
               <h3 className="font-bold text-slate-900 mb-1">2D Arrays (Matrix)</h3>
               <p className="text-xs text-amber-800/70 leading-tight mb-4">Represents rows and columns. Accessed via <code>arr[row][col]</code>.</p>
             </div>
-            <img 
+            <ZoomableImage 
               src={encodeURI("/Array/Matrix grid 3x3 labeled with rows and columns, showing arr ij indexing, educational style diagram")} 
               alt="2D Matrix" 
               className="w-full h-auto rounded-xl border border-amber-200 shadow-sm"
@@ -145,7 +146,7 @@ export default function ArrayDetail({ onBack }: ArrayDetailProps) {
               <h3 className="font-bold text-slate-900 mb-1">Dynamic Arrays</h3>
               <p className="text-xs text-rose-800/70 leading-tight mb-4">Automatically resizes when full, common in Python lists (<code>append</code>).</p>
             </div>
-            <img 
+            <ZoomableImage 
               src={encodeURI("/Array/Array expanding from size 3 to size 6 with arrows showing resizing, memory reallocation visualization.png")} 
               alt="Dynamic Array" 
               className="w-full h-auto rounded-xl border border-rose-200 shadow-sm"
@@ -208,7 +209,7 @@ for i in range(len(arr)):
     print(f"Index: {i}, Value: {arr[i]}")`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Array/Pointer moving from first element to last in an array, arrows showing traversal path.png")} 
                                 alt="Traversal Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -229,7 +230,7 @@ arr.insert(2, 30)
 arr = arr[:2] + [30] + arr[2:]`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Array/Array shifting elements to the right to insert a new value at index 2, step-by-step arrows.png")} 
                                 alt="Insertion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -250,7 +251,7 @@ arr.pop(2)  # removes 30
 arr = arr[:2] + arr[3:]`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Array/Array with one element removed and remaining elements shifting left, clean visualization.png")} 
                                 alt="Deletion Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -273,7 +274,7 @@ arr = arr[:2] + arr[3:]`}
     return -1`}
                            </pre>
                            <div className="bg-white/5 rounded-2xl p-2 border border-white/10 mb-6">
-                              <img 
+                              <ZoomableImage 
                                 src={encodeURI("/Array/Binary search dividing array into halves with mid pointer, step-by-step narrowing down search.png")} 
                                 alt="Binary Search Diagram" 
                                 className="w-full h-auto rounded-xl opacity-90"
@@ -317,7 +318,7 @@ print(arr)  # [10, 99, 30]`}
                </p>
              </div>
              <div className="p-4 bg-slate-50 rounded-2xl flex flex-col items-center justify-center gap-4 mb-4">
-                <img 
+                <ZoomableImage 
                   src={encodeURI("/Array/Large array with mostly zeros and few non-zero elements highlighted, sparse representation.png")} 
                   alt="Sparse Array" 
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
@@ -367,7 +368,7 @@ sparse = {3: 5, 6: 3}`}
                Think of an array as a row of connected lockers. Each locker has a specific number (index), and they are placed right next to each other.
              </p>
              <div className="p-4 bg-slate-50 rounded-2xl flex flex-col items-center justify-center gap-4">
-                <img 
+                <ZoomableImage 
                   src={encodeURI("/Array/Row of lockers numbered sequentially with items inside, representing array indexing concept.png")} 
                   alt="Lockers Analogy" 
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm mb-2"
@@ -395,7 +396,7 @@ for i in range(len(lockers)):
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 flex justify-center mb-6">
-              <img 
+              <ZoomableImage 
                 src={encodeURI("/Array/Circular array in ring shape showing wrap-around indexing, arrows forming a loop.png")} 
                 alt="Circular Array" 
                 className="w-full max-w-[200px] h-auto rounded-xl"
