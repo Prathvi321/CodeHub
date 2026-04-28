@@ -33,8 +33,8 @@ const pages = [
 export default function GitGithubDetail({ onBack }: GitGithubDetailProps) {
   const bookletPath = "/Git and Github/Git and Github Booklet.pdf";
 
-  // We only show the last 2 pages as per user request
-  const visiblePages = pages.slice(-2);
+  // Show all pages in sequence
+  const visiblePages = pages;
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
