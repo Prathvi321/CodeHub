@@ -16,6 +16,8 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
     { id: "deletion", name: "Deletion", color: "rose" },
     { id: "search", name: "Searching", color: "amber" },
     { id: "reverse", name: "Reversal", color: "indigo" },
+    { id: "sort", name: "Sorting", color: "teal" },
+    { id: "concat", name: "Concat/Split", color: "purple" },
   ];
 
   return (
@@ -334,6 +336,43 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                            </p>
                          </div>
                        )}
+
+                       {activeOp === "sort" && (
+                         <div className="space-y-4">
+                           <span className="text-teal-400"># Merge Sort: O(n log n)</span>
+                           <pre className="text-indigo-300 leading-relaxed mb-6">
+{`def merge_sort(head):
+    if not head or not head.next: return head
+    mid = get_middle(head)
+    right_half = mid.next
+    mid.next = None  # split
+    left = merge_sort(head)
+    right = merge_sort(right_half)
+    return sorted_merge(left, right)`}
+                           </pre>
+                           <p className="text-xs text-slate-500 mt-6 leading-relaxed">
+                             Merge sort is preferred over quicksort for linked lists as it relies on sequential access.
+                           </p>
+                         </div>
+                       )}
+
+                       {activeOp === "concat" && (
+                         <div className="space-y-4">
+                           <span className="text-purple-400"># Concatenation: O(n)</span>
+                           <pre className="text-indigo-300 leading-relaxed mb-6">
+{`def concatenate(head1, head2):
+    if not head1: return head2
+    temp = head1
+    while temp.next:
+        temp = temp.next
+    temp.next = head2
+    return head1`}
+                           </pre>
+                           <p className="text-xs text-slate-500 mt-6 leading-relaxed">
+                             Connecting two lists simply involves traversing to the tail of the first and linking it to the head of the second.
+                           </p>
+                         </div>
+                       )}
                     </motion.div>
                  </AnimatePresence>
                </div>
@@ -366,6 +405,15 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                   <div className="w-3 h-3 rounded-full bg-rose-500" />
                   <div className="text-[10px] font-bold text-slate-400">Cycle Detected</div>
                 </div>
+             </div>
+             <div className="mt-6 bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+{`def detect_cycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast: return True
+    return False`}
              </div>
           </div>
 
@@ -434,6 +482,37 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
                    {val}
                  </div>
                ))}
+            </div>
+            <div className="mt-6 bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+{`def find_middle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow.data`}
+             </div>
+          </div>
+
+          {/* Palindrome Card */}
+          <div className="md:col-span-2 bg-indigo-50 border border-indigo-100 rounded-[2.5rem] p-8 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                   <Code className="w-5 h-5" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900">Check Palindrome</h3>
+              </div>
+              <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                Optimal approach <strong className="text-slate-900">O(1) space</strong>: Find the middle node, reverse the second half of the list, and compare both halves sequentially.
+              </p>
+            </div>
+            <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+{`def is_palindrome(head):
+    # 1. Find middle using slow/fast
+    # 2. Reverse the second half
+    # 3. Compare first and second half
+    # 4. (Optional) Restore list
+    return left.data == right.data`}
             </div>
           </div>
 
