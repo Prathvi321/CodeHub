@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
 import LinkedListDetail from "@/src/components/LinkedListDetail";
 import GitGithubDetail from "@/src/components/GitGithubDetail";
+import ArrayDetail from "@/src/components/ArrayDetail";
 import { cn } from "@/src/lib/utils";
 
 const topics = [
@@ -235,6 +236,10 @@ export default function CodeHubHome() {
 
   if (selectedTopic === "git") {
     return <GitGithubDetail onBack={() => setSelectedTopic(null)} />;
+  }
+
+  if (selectedTopic === "array") {
+    return <ArrayDetail onBack={() => setSelectedTopic(null)} />;
   }
 
   return (
