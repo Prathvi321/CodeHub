@@ -1,5 +1,5 @@
 import React from "react";
-import { Search, Code2, Layers, Terminal, Github, Cpu, Network, Database, LayoutGrid } from "lucide-react";
+import { Search, Code2, Layers, Terminal, Github, Cpu, Network, Database, LayoutGrid, RotateCcw } from "lucide-react";
 
 export const topics = [
   { 
