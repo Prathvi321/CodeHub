@@ -1,6 +1,8 @@
 import React from "react";
 import { ArrowLeft, Github, Mail } from "lucide-react";
 import { Card } from "@/src/components/ui/card";
+import Navbar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 
 interface CommunityDetailProps {
   onBack: () => void;
@@ -19,29 +21,7 @@ export default function CommunityDetail({ onBack, onNavigate }: CommunityDetailP
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold cursor-pointer" onClick={onBack}>
-              C
-            </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900 cursor-pointer" onClick={onBack}>CodeHub</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
-            <a href="#" className="hover:text-slate-900 transition-colors" onClick={(e) => handleNav(e, "explore")}>Explore</a>
-            <a href="#" className="hover:text-slate-900 transition-colors" onClick={(e) => handleNav(e, "challenges")}>Challenges</a>
-            <a href="#" className="hover:text-slate-900 transition-colors" onClick={(e) => handleNav(e, "documentation")}>Documentation</a>
-            <button className="text-indigo-600 transition-colors font-medium">Community</button>
-          </div>
-          <div className="flex items-center gap-4">
-            <button className="px-4 py-2 text-sm font-semibold text-slate-700">Sign In</button>
-            <button className="bg-slate-900 text-white px-4 py-2 text-sm font-semibold rounded-lg hover:bg-slate-800 transition-colors">
-              Get Started
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar activePage="community" onNavigate={(page) => { if (page) onNavigate?.(page); else onBack(); }} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-10 py-12 md:py-20">
         <section id="community" className="mb-20">
@@ -111,6 +91,7 @@ export default function CommunityDetail({ onBack, onNavigate }: CommunityDetailP
           </div>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { ArrowLeft, BookOpen, Clock, Code, Info, Lightbulb, Terminal, AlertTrian
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/src/lib/utils";
 import ZoomableImage from "@/src/components/ZoomableImage";
+import Navbar from "@/src/components/Navbar";
+import Footer from "@/src/components/Footer";
 
 interface LinkedListDetailProps {
   onBack: () => void;
@@ -23,26 +25,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
 
   return (
     <div className="min-h-screen bg-[#fdfdfd] selection:bg-indigo-100 selection:text-indigo-900 font-sans">
-      {/* Bento Header/Navigation */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-10 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={onBack}>
-            <div className="bg-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold">
-              C
-            </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">CodeHub</span>
-          </div>
-          <div className="flex items-center gap-4">
-             <button 
-              onClick={onBack}
-              className="px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors flex items-center gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar variant="minimal" onNavigate={() => onBack()} />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-10 py-12">
         {/* Bento Hero */}
@@ -520,22 +503,7 @@ export default function LinkedListDetail({ onBack }: LinkedListDetailProps) {
         </div>
       </main>
 
-      <footer className="border-t border-slate-100 bg-white py-12">
-        <div className="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-8">
-           <div className="flex items-center gap-2 opacity-30">
-            <div className="bg-slate-400 w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px]">
-              C
-            </div>
-            <span className="text-sm font-bold tracking-tight text-slate-400 uppercase">CodeHub</span>
-          </div>
-          <div className="flex gap-8 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-             <a href="#" className="hover:text-indigo-600 transition-colors">Documentation</a>
-             <a href="#" className="hover:text-indigo-600 transition-colors">Courses</a>
-             <a href="#" className="hover:text-indigo-600 transition-colors">Community</a>
-          </div>
-          <p className="text-[10px] text-slate-300">© 2026 CodeHub Pro Learning Inc. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
