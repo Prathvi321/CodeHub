@@ -21,7 +21,12 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
 
     setStatus('loading');
     try {
-      const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxzDmuBEnZ5Wsh0VKm47hUoQGHf18kcnDWBA5golpr0917VT6Qa_S6A8Js4l-wt9xw/exec";
+      // Uses the environment variable from Netlify (or local .env file)
+      const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+      
+      if (!SCRIPT_URL) {
+        throw new Error("Missing Google Script URL configuration");
+      }
       
       const response = await fetch(SCRIPT_URL, {
         method: "POST",
@@ -80,6 +85,8 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
                 <label htmlFor="name" className="block text-sm font-bold text-slate-700 mb-1.5">Full Name</label>
                 <input 
                   id="name"
+                  name="name"
+                  autoComplete="name"
                   type="text" 
                   required
                   value={name}
@@ -93,6 +100,8 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
                 <label htmlFor="email" className="block text-sm font-bold text-slate-700 mb-1.5">Email Address</label>
                 <input 
                   id="email"
+                  name="email"
+                  autoComplete="email"
                   type="email" 
                   required
                   value={email}
