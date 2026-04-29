@@ -22,7 +22,7 @@ export default function SignInModal({ isOpen, onClose }: SignInModalProps) {
     setStatus('loading');
     try {
       // Uses the environment variable from Netlify (or local .env file)
-      const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
+      const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL as string;
       
       if (!SCRIPT_URL) {
         throw new Error("Missing Google Script URL configuration");

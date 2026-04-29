@@ -62,6 +62,12 @@ CodeHub is constantly evolving. Here is what we are building next to make this t
 
 <br/>
 
+> **3. Affordable Premium Certifications** 🏆
+> <br/>
+> Our platform will eventually offer structured, certified courses covering in-demand skills and advanced algorithms. These certifications will be available for a very minimal fee, allowing developers from anywhere in the world to officially validate their skills affordably.
+
+<br/>
+
 ## 🛠️ Tech Stack
 
 <div align="center">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Github } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -10,9 +11,9 @@ export default function Footer() {
           <span className="text-sm font-bold tracking-tight text-slate-500 uppercase">CodeHub</span>
         </div>
         <div className="flex gap-6 text-[11px] font-bold uppercase tracking-wider text-slate-400">
-           <a href="#" className="hover:text-indigo-600 transition-colors">Documentation</a>
-           <a href="#" className="hover:text-indigo-600 transition-colors">Courses</a>
-           <a href="#" className="hover:text-indigo-600 transition-colors">Community</a>
+           <Link to="/documentation" className="hover:text-indigo-600 transition-colors">Documentation</Link>
+           <Link to="/courses" className="hover:text-indigo-600 transition-colors">Courses</Link>
+           <Link to="/community" className="hover:text-indigo-600 transition-colors">Community</Link>
         </div>
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">

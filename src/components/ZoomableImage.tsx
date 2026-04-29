@@ -3,7 +3,12 @@ import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createPortal } from 'react-dom';
 
-interface ZoomableImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
+interface ZoomableImageProps {
+  src: string;
+  alt: string;
+  className?: string;
+  onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
+}
 
 export default function ZoomableImage(props: ZoomableImageProps) {
   const [isOpen, setIsOpen] = useState(false);
