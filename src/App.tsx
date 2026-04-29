@@ -340,9 +340,14 @@ export default function CodeHubHome() {
                             <p className="text-indigo-800 text-sm opacity-80 leading-relaxed font-medium">{topic.description}</p>
                           </div>
                           <div className="flex gap-2 mt-6">
-                            {[1, 2, 3].map(i => (
-                              <div key={i} className="w-8 h-8 rounded bg-indigo-200/50" />
-                            ))}
+                            <div className="w-8 h-8 rounded bg-indigo-200/50 flex items-center justify-center text-indigo-700">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.375-.07 1.889.441.516.515.658 1.258.438 1.9l2.759 2.759c.641-.22 1.386-.073 1.9.442.751.751.751 1.96 0 2.711-.75.75-1.96.75-2.711 0-.511-.511-.659-1.248-.445-1.886l-2.716-2.717V15.02c.224.212.365.518.365.856 0 .647-.523 1.171-1.171 1.171-.646 0-1.171-.524-1.171-1.171 0-.343.144-.654.372-.868V8.145c-.227-.213-.372-.522-.372-.864 0-.646.525-1.17 1.171-1.17.337 0 .642.144.855.367l2.806-2.806L2.454 10.93c-.603.604-.603 1.582 0 2.188l10.48 10.48c.604.604 1.582.604 2.188 0l8.424-8.424c.605-.605.605-1.584 0-2.188z"/>
+                              </svg>
+                            </div>
+                            <div className="w-8 h-8 rounded bg-indigo-200/50 flex items-center justify-center text-indigo-700">
+                              <Github className="w-4 h-4" />
+                            </div>
                           </div>
                         </div>
                       ) : topic.variant === "tall" ? (
