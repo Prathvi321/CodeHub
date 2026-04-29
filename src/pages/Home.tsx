@@ -108,11 +108,7 @@ export default function Home({ onNavigate }: HomeProps) {
                       <p className="text-slate-400 text-sm leading-relaxed">{topic.description}</p>
                     </div>
                     <div className="flex justify-center py-6">
-                       <div className="grid grid-cols-3 gap-3 opacity-20">
-                          {[1, 2, 3, 4, 5, 6].map(i => (
-                            <div key={i} className="w-5 h-5 rounded-full bg-white" />
-                          ))}
-                       </div>
+                      <img src="/Binary Tree/Binary Tree.png" alt="Binary Tree" className="w-full max-h-32 object-contain" />
                     </div>
                   </div>
                 ) : topic.variant === "wide" ? (
@@ -124,11 +120,17 @@ export default function Home({ onNavigate }: HomeProps) {
                       <h3 className="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">{topic.title}</h3>
                       <p className="text-slate-500 text-sm mt-2 leading-relaxed">{topic.description}</p>
                     </div>
-                    <div className="flex gap-1 items-end h-16">
-                      <div className="w-8 h-12 bg-indigo-50 rounded" />
-                      <div className="w-8 h-16 bg-indigo-100 rounded" />
-                      <div className="w-8 h-20 bg-indigo-200 rounded" />
-                      <div className="w-8 h-24 bg-indigo-400 rounded" />
+                    <div className="flex gap-1 items-center justify-end h-24 w-32">
+                      {topic.id === 'dp' && <img src="/Dynamic Programming/Dynamic Programming.png" alt="Dynamic Programming" className="w-full h-full object-contain" />}
+                      {topic.id === 'graphs' && <img src="/Graphs/Graphs.png" alt="Graphs" className="w-full h-full object-contain" />}
+                      {topic.id !== 'dp' && topic.id !== 'graphs' && (
+                        <div className="flex gap-1 items-end h-16">
+                          <div className="w-8 h-12 bg-indigo-50 rounded" />
+                          <div className="w-8 h-16 bg-indigo-100 rounded" />
+                          <div className="w-8 h-20 bg-indigo-200 rounded" />
+                          <div className="w-8 h-24 bg-indigo-400 rounded" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (
