@@ -46,13 +46,7 @@ Follow these steps to set up the project locally.
    npm install
    ```
 
-3. **Environment Variables:**
-   Create a `.env.local` file based on `.env.example` and add any necessary keys (e.g., your Gemini API key if required):
-   ```env
-   GEMINI_API_KEY=your_gemini_api_key_here
-   ```
-
-4. **Run the development server:**
+3. **Run the development server:**
    ```bash
    npm run dev
    ```

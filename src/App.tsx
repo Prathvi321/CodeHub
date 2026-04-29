@@ -4,13 +4,15 @@
  */
 
 import React, { useState } from "react";
-import { Search, Code2, BookOpen, Layers, Terminal, Github, Cpu, Network, Database, ChevronRight, LayoutGrid, RotateCcw } from "lucide-react";
+import { Search, Code2, BookOpen, Layers, Terminal, Github, Cpu, Network, Database, ChevronRight, LayoutGrid, RotateCcw, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Input } from "@/src/components/ui/input";
-import LinkedListDetail from "@/src/components/LinkedListDetail";
-import GitGithubDetail from "@/src/components/GitGithubDetail";
-import ArrayDetail from "@/src/components/ArrayDetail";
+import LinkedListDetail from "@/src/pages/LinkedListDetail";
+import GitGithubDetail from "@/src/pages/GitGithubDetail";
+import ArrayDetail from "@/src/pages/ArrayDetail";
+import CommunityDetail from "@/src/pages/CommunityDetail";
+import DocumentationDetail from "@/src/pages/DocumentationDetail";
 import { cn } from "@/src/lib/utils";
 
 const topics = [
@@ -242,6 +244,14 @@ export default function CodeHubHome() {
     return <ArrayDetail onBack={() => setSelectedTopic(null)} />;
   }
 
+  if (selectedTopic === "community") {
+    return <CommunityDetail onBack={() => setSelectedTopic(null)} onNavigate={(topic) => setSelectedTopic(topic)} />;
+  }
+
+  if (selectedTopic === "documentation") {
+    return <DocumentationDetail onBack={() => setSelectedTopic(null)} onNavigate={(topic) => setSelectedTopic(topic)} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#fdfdfd] selection:bg-indigo-100 selection:text-indigo-900 font-sans">
       {/* Navigation */}
@@ -256,8 +266,8 @@ export default function CodeHubHome() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
             <a href="#" className="text-indigo-600 transition-colors">Explore</a>
             <a href="#" className="hover:text-slate-900 transition-colors">Challenges</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Documentation</a>
-            <a href="#" className="hover:text-slate-900 transition-colors">Community</a>
+            <button onClick={() => setSelectedTopic("documentation")} className="hover:text-slate-900 transition-colors">Documentation</button>
+            <button onClick={() => setSelectedTopic("community")} className="hover:text-slate-900 transition-colors font-medium">Community</button>
           </div>
           <div className="flex items-center gap-4">
             <button className="px-4 py-2 text-sm font-semibold text-slate-700">Sign In</button>

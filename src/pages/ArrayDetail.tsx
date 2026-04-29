@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft, BookOpen, Clock, Code, Info, Lightbulb, Terminal, AlertTriangle, Search, Layers, ChevronRight, RotateCcw, ArrowRight, Network, Cpu, LayoutGrid, Box, Database } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/src/lib/utils";
-import ZoomableImage from "./ZoomableImage";
+import ZoomableImage from "@/src/components/ZoomableImage";
 
 interface ArrayDetailProps {
   onBack: () => void;

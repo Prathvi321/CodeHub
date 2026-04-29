@@ -1,7 +1,7 @@
 import React from "react";
 import { ArrowLeft, Download, Github, BookOpen } from "lucide-react";
 import { motion } from "motion/react";
-import ZoomableImage from "./ZoomableImage";
+import ZoomableImage from "@/src/components/ZoomableImage";
 
 interface GitGithubDetailProps {
   onBack: () => void;
