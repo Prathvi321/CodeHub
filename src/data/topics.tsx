@@ -12,6 +12,16 @@ export const topics = [
     theme: "bg-indigo-50 border-indigo-100 text-indigo-900",
     variant: "large"
   },
+  {
+    id: "pandas",
+    title: "Pandas",
+    image: "",
+    icon: <Database className="w-5 h-5 text-indigo-600" />,
+    description: "Data manipulation, cleaning, and analysis.",
+    span: "md:col-span-1 md:row-span-1",
+    theme: "bg-indigo-50 border-indigo-100 text-indigo-900",
+    iconBg: "bg-indigo-100"
+  },
   { 
     id: "linked-list",
     title: "Linked List", 

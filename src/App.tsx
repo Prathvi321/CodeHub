@@ -13,6 +13,7 @@ import DocumentationDetail from "@/src/pages/DocumentationDetail";
 import StackDetail from "@/src/pages/StackDetail";
 import Home from "@/src/pages/Home";
 import Challenges from "@/src/pages/Challenges";
+import PandasDetail from "@/src/pages/PandasDetail";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function AppRoutes() {
       <Route path="/stack" element={<StackDetail onBack={() => navigate('/')} />} />
       <Route path="/community" element={<CommunityDetail onBack={() => navigate('/')} onNavigate={handleNavigate} />} />
       <Route path="/documentation" element={<DocumentationDetail onBack={() => navigate('/')} onNavigate={handleNavigate} />} />
+      <Route path="/pandas" element={<PandasDetail onBack={() => navigate('/')} />} />
       
       {/* Catch-all route renders the Under Construction Challenges page for any missing topics */}
       <Route path="*" element={<Challenges />} />

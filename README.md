@@ -101,13 +101,7 @@ Follow these steps to set up the project locally.
    npm install
    ```
 
-3. **Set up Environment Variables:**
-   Create a `.env.local` file and add your Google Apps Script URL for the sign-in modal API:
-   ```env
-   VITE_GOOGLE_SCRIPT_URL="your_google_script_url_here"
-   ```
-
-4. **Run the development server:**
+3. **Run the development server:**
    ```bash
    npm run dev
    ```

@@ -28,7 +28,7 @@ export default function Navbar({ variant = "default", activePage = "explore", on
             <span className="text-xl font-bold tracking-tight text-slate-900">CodeHub</span>
           </div>
           <div className="flex items-center gap-4">
-             <button 
+            <button
               onClick={(e) => handleNav(e, null)}
               className="px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 rounded-lg transition-colors flex items-center gap-2"
             >
@@ -50,33 +50,33 @@ export default function Navbar({ variant = "default", activePage = "explore", on
             <span className="text-xl font-bold tracking-tight text-slate-900 cursor-pointer" onClick={(e) => handleNav(e, null)}>CodeHub</span>
           </div>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
-            <button 
-              onClick={(e) => handleNav(e, "explore")} 
+            <button
+              onClick={(e) => handleNav(e, "explore")}
               className={cn("transition-colors", activePage === "explore" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
             >
               Explore
             </button>
-            <button 
-              onClick={(e) => handleNav(e, "challenges")} 
+            <button
+              onClick={(e) => handleNav(e, "challenges")}
               className={cn("transition-colors", activePage === "challenges" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
             >
               Challenges
             </button>
-            <button 
-              onClick={(e) => handleNav(e, "documentation")} 
+            <button
+              onClick={(e) => handleNav(e, "documentation")}
               className={cn("transition-colors", activePage === "documentation" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
             >
               Documentation
             </button>
-            <button 
-              onClick={(e) => handleNav(e, "community")} 
+            <button
+              onClick={(e) => handleNav(e, "community")}
               className={cn("transition-colors", activePage === "community" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
             >
               Community
             </button>
           </div>
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={() => setIsSignInOpen(true)}
               className="px-4 py-2 text-sm font-semibold text-slate-700"
             >
@@ -86,9 +86,9 @@ export default function Navbar({ variant = "default", activePage = "explore", on
         </div>
       </nav>
 
-      <SignInModal 
-        isOpen={isSignInOpen} 
-        onClose={() => setIsSignInOpen(false)} 
+      <SignInModal
+        isOpen={isSignInOpen}
+        onClose={() => setIsSignInOpen(false)}
       />
     </>
   );
