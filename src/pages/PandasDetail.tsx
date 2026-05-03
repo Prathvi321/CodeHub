@@ -83,11 +83,11 @@ export default function PandasDetail({ onBack }: PandasDetailProps) {
                />
             </div>
 
-            <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+            <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
 {`import pandas as pd
 s = pd.Series([10, 20, 30], index=['a', 'b', 'c'])
 print(s['a']) # Output: 10`}
-            </div>
+            </pre>
           </div>
 
           {/* DataFrame Card */}
@@ -113,13 +113,13 @@ print(s['a']) # Output: 10`}
                 className="w-full h-auto rounded-xl object-cover max-h-[160px]"
               />
             </div>
-             <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+             <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
 {`df = pd.DataFrame({
     'Name': ['A', 'B'],
     'Age': [20, 25]
 })
 print(df['Name']) # Access column`}
-            </div>
+            </pre>
           </div>
 
           {/* loc vs iloc Card */}
@@ -340,7 +340,7 @@ df1.join(df2)`}
                <p className="text-slate-400 text-sm mb-6 leading-relaxed">
                  From raw data to exported insights, most data science pipelines follow a standard procedure using pandas IO functions (<code>read_csv</code>, <code>to_csv</code>) and chaining methods.
                </p>
-               <div className="bg-slate-950 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
+               <pre className="bg-slate-950 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
 {`# 1. Load
 df = pd.read_csv('data.csv')
 # 2. Inspect
@@ -353,7 +353,7 @@ df['Age'] += 1
 print(df.groupby('Dept')['Salary'].mean())
 # 6. Export
 df.to_csv('cleaned.csv')`}
-               </div>
+               </pre>
              </div>
              <div className="flex-1 w-full bg-white/5 rounded-3xl p-4 border border-white/10 flex justify-center items-center">
                <ZoomableImage 
@@ -384,14 +384,14 @@ df.to_csv('cleaned.csv')`}
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
                 />
              </div>
-             <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
+             <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
 {`pd.pivot_table(
     df, 
     values='Salary', 
     index='Dept', 
     aggfunc='mean'
 )`}
-             </div>
+             </pre>
           </div>
 
           {/* Time Series Card */}
@@ -414,12 +414,12 @@ df.to_csv('cleaned.csv')`}
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
                 />
              </div>
-             <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
+             <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800 overflow-x-auto">
 {`df['date'] = pd.to_datetime(df['date'])
 df.set_index('date', inplace=True)
 # Resample daily data to monthly mean
 df.resample('M').mean()`}
-             </div>
+             </pre>
           </div>
 
         </div>

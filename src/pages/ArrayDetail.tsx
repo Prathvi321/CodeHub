@@ -307,12 +307,12 @@ print(arr)  # [10, 99, 30]`}
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm"
                 />
              </div>
-             <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+             <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
 {`arr = [0, 0, 0, 5, 0, 0, 3]
 
 # Efficient storage mapping index -> value
 sparse = {3: 5, 6: 3}`}
-             </div>
+             </pre>
           </div>
 
           {/* Performance Summary Card */}
@@ -357,12 +357,12 @@ sparse = {3: 5, 6: 3}`}
                   className="w-full h-auto rounded-xl border border-slate-200 shadow-sm mb-2"
                 />
              </div>
-             <div className="mt-6 bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+             <pre className="mt-6 bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
 {`lockers = ["A", "B", "C", "D"]
 
 for i in range(len(lockers)):
     print(f"Locker {i} has {lockers[i]}")`}
-             </div>
+             </pre>
           </div>
 
           {/* Circular Arrays Card */}
@@ -385,12 +385,12 @@ for i in range(len(lockers)):
                 className="w-full max-w-[200px] h-auto rounded-xl"
               />
             </div>
-            <div className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
+             <pre className="bg-slate-900 rounded-2xl p-4 text-xs font-mono text-indigo-300 border border-slate-800">
 {`arr = [1, 2, 3, 4]
 
 index = 5
 print(arr[index % len(arr)]) # wrap around`}
-             </div>
+             </pre>
           </div>
 
         </div>
