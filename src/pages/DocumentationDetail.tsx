@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Book, Code, Component, PenTool, FileText, ChevronRight } from "lucide-react";
+import { Book, Code, Component, PenTool, FileText, ChevronRight, Rocket, Layers } from "lucide-react";
 import Navbar from "@/src/components/Navbar";
 import Footer from "@/src/components/Footer";
 
@@ -34,12 +34,42 @@ export default function DocumentationDetail({ onBack, onNavigate }: Documentatio
               Welcome to the CodeHub documentation! This platform is designed to help you master Data Structures, Algorithms, and other core Computer Science concepts through highly visual and interactive guides.
             </p>
             
-            <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">Navigation</h3>
+            <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">Local Setup</h3>
+            <p className="text-slate-600 mb-4">
+              Follow these steps to set up the project locally. You will need Node.js (v18 or higher recommended) and npm or yarn installed.
+            </p>
+            <pre className="bg-slate-900 p-4 rounded-xl text-slate-300 text-sm overflow-x-auto border border-slate-800 mb-6">
+{`# Clone the repository
+git clone https://github.com/Prathvi321/CodeHub.git
+cd CodeHub
+
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev`}
+            </pre>
+            <p className="text-slate-600 mb-6">The application will be running at <code>http://localhost:3000</code>.</p>
+
+            <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">Project Structure</h3>
+            <pre className="bg-slate-900 p-4 rounded-xl text-slate-300 text-sm overflow-x-auto border border-slate-800 mb-6">
+{`src/
+├── components/          # Reusable UI components & Detailed Guides
+│   ├── SignInModal.tsx  # Interactive API Sign-In Modal
+│   ├── ui/              # Base UI components (Cards, Inputs, etc.)
+│   └── ...              # Topic specific detail pages
+├── data/
+│   └── topics.tsx       # Core structural data for the Bento Grid
+├── pages/
+│   └── Home.tsx         # Main interactive discovery layout
+├── App.tsx              # Main Application Component & Routing Logic
+└── main.tsx             # React Entry Point`}
+            </pre>
+
+            <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">Navigation & Guides</h3>
             <p className="text-slate-600 mb-4">
               CodeHub uses a masonry-style bento grid for topic discovery. You can browse through the cards on the home page or use the search bar to filter topics by title or description. Press <kbd className="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-xs mx-1">⌘ K</kbd> to quickly focus the search bar.
             </p>
-
-            <h3 className="text-xl font-bold text-slate-900 mt-8 mb-3">Exploring Guides</h3>
             <p className="text-slate-600 mb-4">
               Clicking on any card in the grid will open a detailed guide. These guides often feature:
             </p>
@@ -49,6 +79,95 @@ export default function DocumentationDetail({ onBack, onNavigate }: Documentatio
               <li>Interactive code snippets.</li>
               <li>Downloadable resources (e.g., PDF handbooks).</li>
             </ul>
+          </div>
+        );
+      case "features":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+             <div className="inline-flex items-center gap-2 px-3 py-1 bg-sky-100 text-sky-700 rounded-full text-[10px] font-bold uppercase tracking-wider mb-4">
+              <Layers className="w-3 h-3" />
+              Platform
+            </div>
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Features & Tech Stack</h2>
+            <p className="text-slate-600 mb-8 text-lg">
+              CodeHub is a modern, responsive React-based web application.
+            </p>
+
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Core Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+                 <h4 className="font-bold text-slate-900 mb-2">Interactive Bento-Grid Layout</h4>
+                 <p className="text-sm text-slate-600">A visually stunning and responsive topic discovery grid inspired by modern glassmorphism design.</p>
+               </div>
+               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+                 <h4 className="font-bold text-slate-900 mb-2">In-Depth Educational Guides</h4>
+                 <p className="text-sm text-slate-600">Comprehensive learning materials for topics like Arrays, Linked Lists, and Git complete with code snippets.</p>
+               </div>
+               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+                 <h4 className="font-bold text-slate-900 mb-2">Smooth Animations</h4>
+                 <p className="text-sm text-slate-600">Fluid layout transitions, hover effects, and page animations powered by Framer Motion.</p>
+               </div>
+               <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm">
+                 <h4 className="font-bold text-slate-900 mb-2">Search & Filtering</h4>
+                 <p className="text-sm text-slate-600">Quickly find topics, algorithms, or concepts of interest with the built-in lightning-fast search functionality.</p>
+               </div>
+            </div>
+
+            <h3 className="text-xl font-bold text-slate-900 mb-4">Tech Stack</h3>
+            <div className="flex flex-wrap gap-3">
+              <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium border border-slate-200">React</span>
+              <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium border border-slate-200">TypeScript</span>
+              <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium border border-slate-200">Tailwind CSS</span>
+              <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium border border-slate-200">Vite</span>
+              <span className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium border border-slate-200">Framer Motion</span>
+            </div>
+          </div>
+        );
+      case "roadmap":
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+             <div className="inline-flex items-center gap-2 px-3 py-1 bg-fuchsia-100 text-fuchsia-700 rounded-full text-[10px] font-bold uppercase tracking-wider mb-4">
+              <Rocket className="w-3 h-3" />
+              Future
+            </div>
+            <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Roadmap & Goals</h2>
+            <p className="text-slate-600 mb-8 text-lg">
+              CodeHub is constantly evolving. Here is what we are building next to make this the ultimate learning platform.
+            </p>
+
+            <div className="space-y-6">
+              <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                <h4 className="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
+                  🧠 Expanded Challenges & Specialized Fields
+                </h4>
+                <p className="text-slate-600 mb-3">We will add new, specialized challenges focusing on high-demand technical fields:</p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-600 text-sm">
+                  <li><strong>Core Programming:</strong> Python, Web Development, Computer Networking</li>
+                  <li><strong>Data & AI:</strong> Data Science, Machine Learning, TensorFlow, Numpy, Pandas</li>
+                  <li><strong>Advanced Tech:</strong> Large Language Models (LLMs), Retrieval-Augmented Generation (RAG)</li>
+                </ul>
+              </div>
+
+              <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                <h4 className="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
+                  🎬 Dual-Mode Learning Paths
+                </h4>
+                <p className="text-slate-600 mb-3">For every topic, we will offer two distinct learning tabs at the top of the page:</p>
+                <ul className="list-disc pl-5 space-y-1 text-slate-600 text-sm">
+                  <li><strong>📖 Self Learning (Current):</strong> Read through comprehensive text-based notes, study visual diagrams, and review optimized code snippets at your own pace.</li>
+                  <li><strong>🧑‍🏫 Guided Learning (New):</strong> An interactive video mode where you watch a lesson, and at specific timestamps, the video pauses automatically. A code editor and assignment will pop up on your screen, allowing you to submit your answer and get instant feedback.</li>
+                </ul>
+              </div>
+
+              <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm">
+                <h4 className="font-bold text-lg text-slate-900 mb-2 flex items-center gap-2">
+                  🏆 Affordable Premium Certifications
+                </h4>
+                <p className="text-slate-600 text-sm">
+                  Our platform will eventually offer structured, certified courses covering in-demand skills and advanced algorithms. These certifications will be available for a very minimal fee, allowing developers from anywhere in the world to officially validate their skills affordably.
+                </p>
+              </div>
+            </div>
           </div>
         );
       case "adding-topic":
@@ -177,6 +296,8 @@ export default function DocumentationDetail({ onBack, onNavigate }: Documentatio
 
   const navItems = [
     { id: "getting-started", label: "Getting Started", icon: <Book className="w-4 h-4" /> },
+    { id: "features", label: "Features & Stack", icon: <Layers className="w-4 h-4" /> },
+    { id: "roadmap", label: "Roadmap", icon: <Rocket className="w-4 h-4" /> },
     { id: "adding-topic", label: "Adding a Topic", icon: <Code className="w-4 h-4" /> },
     { id: "components", label: "Component Library", icon: <Component className="w-4 h-4" /> },
     { id: "content", label: "Content Guidelines", icon: <PenTool className="w-4 h-4" /> },
