@@ -22,6 +22,16 @@ export const topics = [
     theme: "bg-indigo-50 border-indigo-100 text-indigo-900",
     iconBg: "bg-indigo-100"
   },
+  {
+    id: "numpy",
+    title: "NumPy",
+    image: "",
+    icon: <Database className="w-5 h-5 text-blue-600" />,
+    description: "Numerical computing and multi-dimensional arrays.",
+    span: "md:col-span-1 md:row-span-1",
+    theme: "bg-blue-50 border-blue-100 text-blue-900",
+    iconBg: "bg-blue-100"
+  },
   { 
     id: "linked-list",
     title: "Linked List", 
