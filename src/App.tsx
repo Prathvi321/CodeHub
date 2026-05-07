@@ -15,6 +15,7 @@ import Home from "@/src/pages/Home";
 import Challenges from "@/src/pages/Challenges";
 import PandasDetail from "@/src/pages/PandasDetail";
 import NumpyDetail from "@/src/pages/NumpyDetail";
+import QueueDetail from "@/src/pages/QueueDetail";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ function AppRoutes() {
       <Route path="/documentation" element={<DocumentationDetail onBack={() => navigate('/')} onNavigate={handleNavigate} />} />
       <Route path="/pandas" element={<PandasDetail onBack={() => navigate('/')} />} />
       <Route path="/numpy" element={<NumpyDetail onBack={() => navigate('/')} />} />
+      <Route path="/queue" element={<QueueDetail onBack={() => navigate('/')} />} />
       
       {/* Catch-all route renders the Under Construction Challenges page for any missing topics */}
       <Route path="*" element={<Challenges />} />
