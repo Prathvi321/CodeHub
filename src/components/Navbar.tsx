@@ -57,6 +57,12 @@ export default function Navbar({ variant = "default", activePage = "explore", on
               Explore
             </button>
             <button
+              onClick={(e) => handleNav(e, "courses")}
+              className={cn("transition-colors", activePage === "courses" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
+            >
+              Courses
+            </button>
+            <button
               onClick={(e) => handleNav(e, "challenges")}
               className={cn("transition-colors", activePage === "challenges" ? "text-indigo-600 font-medium" : "hover:text-slate-900")}
             >
