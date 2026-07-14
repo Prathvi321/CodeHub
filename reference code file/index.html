@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+  :root{
+    --paper:#F6F4EE;
+    --panel:#FFFFFE;
+    --ink:#1E1D1A;
+    --ink-soft:#5B584F;
+    --ink-faint:#8C897E;
+    --rule:#E2DDD0;
+    --rule-strong:#CFC8B5;
+    --accent:#2F5D45;
+    --accent-soft:#E6EDE6;
+    --gold:#A9762F;
+    --code-bg:#1B211D;
+    --code-ink:#E6E3D6;
+    --code-bar:#141814;
+    --shadow: 0 24px 60px -28px rgba(20,20,15,.35), 0 3px 10px rgba(20,20,15,.08);
+    --radius: 3px;
+    --rail-w: 320px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Lora', Georgia, serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background: var(--accent); color:#fff; }
+  a{ color:inherit; }
+
+  /* ---------- App shell ---------- */
+  .app-shell{
+    display:grid;
+    grid-template-columns: var(--rail-w) 1fr;
+    min-height:100vh;
+  }
+  @media (max-width: 900px){
+    .app-shell{ grid-template-columns: 1fr; }
+    .sidebar{ position:fixed; left:0; top:0; height:100vh; z-index:40; transform:translateX(-105%); transition:transform .22s ease; }
+    .sidebar.open{ transform:translateX(0); }
+    .scrim{ display:none; position:fixed; inset:0; background:rgba(10,12,9,.45); z-index:30; }
+    .scrim.show{ display:block; }
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    background:#181D19;
+    color:#E9E6DA;
+    display:flex;
+    flex-direction:column;
+    width:var(--rail-w);
+    height:100vh;
+    position:sticky;
+    top:0;
+    border-right:1px solid #0F1210;
+  }
+  .sidebar-head{
+    padding:1.7rem 1.5rem 1.2rem;
+    border-bottom:1px solid #2B302B;
+  }
+  .brand{ display:flex; align-items:baseline; gap:.5rem; margin-bottom:.2rem; }
+  .brand-mark{ font-family:'Fraunces', serif; font-weight:700; font-size:1.5rem; color:var(--gold); line-height:1; }
+  .brand-name{ font-family:'Fraunces', serif; font-weight:600; font-size:1.12rem; color:#F5F2E6; }
+  .brand-sub{ font-family:'Inter',sans-serif; font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:#8B8A78; margin:.25rem 0 0; }
+
+  .search-wrap{ padding:1rem 1.5rem; border-bottom:1px solid #2B302B; }
+  .search-input{
+    width:100%; background:#12160F; color:#D9D6C6; border:1px solid #2B302B;
+    border-radius:var(--radius); padding:.55rem .7rem; font-family:'Inter',sans-serif; font-size:.8rem;
+  }
+  .search-input:focus{ outline:2px solid var(--gold); outline-offset:1px; }
+
+  .nav-scroll{ flex:1; overflow-y:auto; padding:1rem .7rem 2rem; }
+  .nav-file-label{
+    font-family:'Inter',sans-serif; font-size:.65rem; letter-spacing:.1em; text-transform:uppercase;
+    color:#6E7364; padding:.9rem .8rem .35rem; margin-top:.3rem;
+  }
+  .nav-file-label:first-child{ margin-top:0; }
+  ul.nav-list{ list-style:none; margin:0; padding:0; }
+  .nav-chapter > a{
+    display:flex; gap:.55rem; align-items:baseline;
+    font-family:'Fraunces', serif; font-size:.92rem; font-weight:600;
+    color:#EDEADB; text-decoration:none;
+    padding:.5rem .8rem; border-radius:var(--radius);
+  }
+  .nav-chapter > a .num{ color:var(--gold); font-family:'JetBrains Mono',monospace; font-size:.72rem; flex:0 0 auto; }
+  .nav-chapter > a:hover{ background:#20261F; }
+  .nav-chapter.active > a{ background:var(--accent-soft-dark,#22301F); color:#FFFDF5; }
+  .nav-chapter.active > a{ background:#233324; }
+  ul.nav-sub{ list-style:none; margin:.1rem 0 .5rem; padding:0 0 0 1.9rem; }
+  .nav-sub li a{
+    display:block; font-family:'Inter',sans-serif; font-size:.76rem; color:#A6A28C;
+    text-decoration:none; padding:.3rem .6rem; border-radius:var(--radius); line-height:1.35;
+  }
+  .nav-sub li a:hover{ color:#F5F2E6; background:#20261F; }
+  .nav-sub li a.active{ color:var(--gold); }
+  .no-results{ font-family:'Inter',sans-serif; font-size:.78rem; color:#767461; padding:.6rem .8rem; }
+
+  .sidebar-foot{
+    padding:.9rem 1.5rem; border-top:1px solid #2B302B;
+    font-family:'Inter',sans-serif; font-size:.68rem; color:#6E7364; display:flex; justify-content:space-between; gap:.5rem;
+  }
+  .sidebar-foot button{
+    background:transparent; border:1px solid #343A32; color:#D8D5C6; border-radius:var(--radius);
+    font-family:'Inter',sans-serif; font-size:.68rem; padding:.35rem .6rem; cursor:pointer;
+  }
+  .sidebar-foot button:hover{ background:#20261F; }
+
+  .menu-btn{
+    display:none; position:fixed; top:1rem; left:1rem; z-index:20;
+    background:#181D19; color:#EDEADB; border:1px solid #343A32; border-radius:var(--radius);
+    padding:.5rem .7rem; font-family:'Inter',sans-serif; font-size:.85rem; cursor:pointer;
+  }
+  @media (max-width:900px){ .menu-btn{ display:inline-flex; } }
+
+  /* ---------- Main / reader ---------- */
+  .reader{
+    padding:3.4rem 3rem 6rem;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  @media (max-width:900px){ .reader{ padding:5rem 1.1rem 4rem; } }
+
+  .reader-topbar{
+    width:100%; max-width:760px; display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:1.3rem; font-family:'Inter',sans-serif;
+  }
+  .crumbs{ font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); }
+  .crumbs strong{ color:var(--ink-soft); }
+  .progress-chip{
+    font-family:'JetBrains Mono', monospace; font-size:.7rem; color:var(--ink-faint);
+    background:var(--panel); border:1px solid var(--rule); padding:.3rem .6rem; border-radius:999px;
+  }
+
+  .paper{
+    background:var(--panel);
+    width:100%; max-width:760px;
+    padding:4.4rem 4rem;
+    box-shadow:var(--shadow);
+    border-radius:2px;
+    position:relative;
+  }
+  .paper::before{ content:""; position:absolute; inset:0; border:1px solid rgba(0,0,0,.04); pointer-events:none; }
+  @media (max-width:640px){ .paper{ padding:2.4rem 1.4rem; } }
+
+  /* ---------- Body typography (matches PDF export) ---------- */
+  .md-body{ font-size:1rem; line-height:1.75; }
+  .md-body p{ margin:0 0 1.05em; }
+  .md-body strong{ color:var(--ink); font-weight:600; }
+  .md-body a{ color:var(--accent); text-decoration-color:var(--rule-strong); }
+
+  .md-h{ font-family:'Fraunces', serif; color:var(--ink); position:relative; scroll-margin-top:2rem; }
+  .md-h1{ font-size:2rem; font-weight:700; margin:0 0 1.6rem; padding-bottom:.7rem; border-bottom:3px solid var(--ink); letter-spacing:-.01em; }
+  .md-h2{ font-size:1.42rem; font-weight:600; margin:2.6rem 0 1.1rem; color:var(--accent); }
+  .md-h2::before{ content:""; display:block; width:34px; height:2px; background:var(--gold); margin-bottom:.7rem; }
+  .md-h3{ font-size:1.12rem; font-weight:600; margin:2rem 0 .75rem; }
+  .md-h4{ font-family:'Inter',sans-serif; font-size:.86rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-soft); margin:1.6rem 0 .6rem; }
+  .md-h5, .md-h6{ font-family:'Inter',sans-serif; font-size:.8rem; font-weight:600; color:var(--ink-soft); margin:1.3rem 0 .5rem; }
+
+  .md-body ul, .md-body ol{ margin:0 0 1.05em; padding-left:1.3em; }
+  .md-body li{ margin-bottom:.35em; }
+  .md-body li::marker{ color:var(--gold); }
+
+  .md-quote{
+    margin:1.3em 0; padding:.2em 1.2em; border-left:3px solid var(--gold);
+    background:var(--accent-soft); color:var(--ink-soft); font-style:italic;
+    border-radius:0 var(--radius) var(--radius) 0;
+  }
+  .md-quote p{ margin:.7em 0; }
+
+  .md-divider{ border:none; border-top:1px solid var(--rule); margin:2.6rem 0; }
+
+  .table-wrap{ margin:1.4em 0; overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; font-size:.86rem; font-family:'Lora', serif; }
+  thead th{
+    text-align:left; font-family:'Inter',sans-serif; font-size:.68rem; letter-spacing:.06em;
+    text-transform:uppercase; color:#FBFAF5; background:var(--ink); padding:.6rem .8rem;
+  }
+  tbody td{ padding:.55rem .8rem; border-bottom:1px solid var(--rule); vertical-align:top; }
+  tbody tr:nth-child(even){ background:#FAF8F2; }
+
+  .code-block{ margin:1.4em 0; border-radius:var(--radius); overflow:hidden; box-shadow:0 8px 22px -14px rgba(0,0,0,.4); }
+  .code-bar{
+    background:var(--code-bar); color:#9CA895; font-family:'JetBrains Mono', monospace; font-size:.68rem;
+    letter-spacing:.08em; text-transform:uppercase; padding:.5rem .9rem; display:flex; align-items:center; justify-content:space-between;
+  }
+  .code-bar::before{ content:"● ● ●"; letter-spacing:.2em; color:#3A4038; font-size:.6rem; }
+  .code-pre{ margin:0; background:var(--code-bg); padding:1.05rem 1.15rem 1.2rem; overflow-x:auto; }
+  .code-pre code{ font-family:'JetBrains Mono', monospace; font-size:.76rem; line-height:1.62; color:var(--code-ink); background:none; white-space:pre; }
+  p code, li code{ font-family:'JetBrains Mono', monospace; font-size:.83em; background:var(--accent-soft); color:var(--accent); padding:.12em .38em; border-radius:3px; }
+
+  .hljs-keyword, .hljs-built_in, .hljs-type{ color:#8FBF9F; }
+  .hljs-string, .hljs-attr{ color:#D9B36C; }
+  .hljs-number, .hljs-literal{ color:#C98B6B; }
+  .hljs-comment{ color:#6C7268; font-style:italic; }
+  .hljs-function, .hljs-title{ color:#9FC1E0; }
+  .hljs-variable, .hljs-params{ color:var(--code-ink); }
+  .hljs-meta{ color:#7C8A78; }
+  .hljs-symbol, .hljs-tag{ color:#C98B6B; }
+
+  img{ max-width:100%; border-radius:2px; }
+
+  /* ---------- Chapter footer navigation (page turn) ---------- */
+  .page-nav{
+    width:100%; max-width:760px; display:flex; justify-content:space-between; gap:1rem; margin-top:1.6rem;
+    font-family:'Inter',sans-serif;
+  }
+  .page-nav a{
+    flex:1; text-decoration:none; padding:.9rem 1.1rem; border:1px solid var(--rule-strong);
+    border-radius:var(--radius); background:var(--panel); color:var(--ink); transition:border-color .15s ease, transform .08s ease;
+  }
+  .page-nav a:hover{ border-color:var(--gold); }
+  .page-nav a:active{ transform:translateY(1px); }
+  .page-nav .dir{ font-size:.65rem; letter-spacing:.09em; text-transform:uppercase; color:var(--ink-faint); display:block; margin-bottom:.25rem; }
+  .page-nav .ttl{ font-family:'Fraunces', serif; font-weight:600; font-size:.95rem; }
+  .page-nav .next{ text-align:right; margin-left:auto; }
+  .page-nav .spacer{ flex:1; }
+
+  .empty-state, .loading-state{
+    text-align:center; padding:5rem 1rem; color:var(--ink-faint); font-family:'Inter',sans-serif;
+  }
+  .empty-state .glyph, .loading-state .glyph{ font-family:'Fraunces', serif; font-size:2.4rem; color:var(--rule-strong); margin-bottom:1rem; }
+  .empty-state code{ background:var(--accent-soft); color:var(--accent); padding:.15em .4em; border-radius:3px; }
+
+  /* ---------- Print: export the whole book ---------- */
+  @media print{
+    .sidebar, .menu-btn, .reader-topbar, .page-nav{ display:none !important; }
+    .reader{ padding:0; display:block; }
+    .paper{ box-shadow:none; border-radius:0; max-width:none; width:auto; padding:0; }
+    .paper::before{ display:none; }
+  }
+  .print-page{ break-before:page; page-break-before:always; }
+  .print-page:first-child{ break-before:auto; page-break-before:auto; }
+  .md-h{ break-after:avoid; page-break-after:avoid; }
+  .code-block, .table-wrap, table, .md-quote, img{ break-inside:avoid; page-break-inside:avoid; }
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn">☰ Chapters</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="brand">
+        <span class="brand-mark">§</span>
+        <span class="brand-name" id="bookTitle">Reader</span>
+      </div>
+      <p class="brand-sub" id="bookSub">Chapters</p>
+    </div>
+    <div class="search-wrap">
+      <input class="search-input" id="searchInput" type="text" placeholder="Filter chapters…">
+    </div>
+    <nav class="nav-scroll" id="navScroll">
+      <div class="loading-state"><div class="glyph">§</div>Loading…</div>
+    </nav>
+    <div class="sidebar-foot">
+      <span id="chapterCount"></span>
+      <button id="printBtn">Export PDF</button>
+    </div>
+  </aside>
+
+  <main class="reader">
+    <div class="reader-topbar">
+      <span class="crumbs" id="crumbs">—</span>
+      <span class="progress-chip" id="progressChip">—</span>
+    </div>
+    <div class="paper" id="paper">
+      <div class="loading-state"><div class="glyph">§</div>Loading your library…</div>
+    </div>
+    <nav class="page-nav" id="pageNav"></nav>
+  </main>
+</div>
+
+<!-- Full book, built for print/export only -->
+<div id="printRoot" style="display:none;"></div>
+
+<script>
+/* ============================================================
+   CONFIGURATION
+   Point CONTENT_DIR at the folder (relative to this file) that
+   holds your .md files, and list them in content/manifest.json
+   in the order they should appear. See content/manifest.json.
+   ============================================================ */
+const CONTENT_DIR = 'content/';
+const MANIFEST_URL = CONTENT_DIR + 'manifest.json';
+
+/* ============ helpers ============ */
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function makeSlugger(seen){
+  seen = seen || new Map();
+  return function slugify(raw){
+    let s = String(raw).toLowerCase()
+      .replace(/<[^>]+>/g,'')
+      .replace(/[^a-z0-9\s-]/g,'')
+      .trim()
+      .replace(/\s+/g,'-');
+    if(!s) s = 'section';
+    if(seen.has(s)){
+      const n = seen.get(s)+1;
+      seen.set(s,n);
+      return s + '-' + n;
+    }
+    seen.set(s,0);
+    return s;
+  };
+}
+
+/* Split a markdown document into chapters at top-level (#) headings only.
+   Content before the first H1 becomes an (optional) "Preface" chapter.
+   Fenced code blocks are tracked so a '#' inside a code sample is never
+   mistaken for a heading. */
+function splitIntoChapters(markdown, fallbackTitle){
+  const lines = markdown.replace(/\r\n/g,'\n').split('\n');
+  const chapters = [];
+  let current = null;
+  let inFence = false;
+  let fenceMarker = '';
+
+  function pushCurrent(){
+    if(current && current.lines.some(l => l.trim() !== '')){
+      chapters.push(current);
+    }
+  }
+
+  current = { title: fallbackTitle, lines: [] };
+
+  for(const line of lines){
+    const fenceMatch = line.match(/^(\s*)(```|~~~)/);
+    if(fenceMatch){
+      if(!inFence){ inFence = true; fenceMarker = fenceMatch[2]; }
+      else if(line.trim().startsWith(fenceMarker)){ inFence = false; }
+      current.lines.push(line);
+      continue;
+    }
+    if(!inFence){
+      const h1 = line.match(/^#\s+(.+?)\s*$/);
+      if(h1){
+        pushCurrent();
+        current = { title: h1[1].replace(/[*_`]/g,'').trim(), lines: [line] };
+        continue;
+      }
+    }
+    current.lines.push(line);
+  }
+  pushCurrent();
+
+  return chapters.map(c => ({ title: c.title, markdown: c.lines.join('\n') }));
+}
+
+/* ============ markdown -> html renderer (matches the PDF export style) ============ */
+function buildRenderer(slugify, subHeadings, chapterId){
+  const renderer = new marked.Renderer();
+  let sawH1 = false;
+
+  renderer.heading = function(text, level, raw){
+    const plain = String(raw).replace(/<[^>]+>/g,'');
+    let id;
+    if(level === 1 && !sawH1 && chapterId){
+      id = chapterId; sawH1 = true;
+    } else {
+      id = slugify(plain);
+    }
+    if(level >= 2 && level <= 3 && subHeadings){
+      subHeadings.push({ level, id, text: escapeHtml(plain) });
+    }
+    return '<h' + level + ' id="' + id + '" class="md-h md-h' + level + '">' + text + '</h' + level + '>\n';
+  };
+
+  renderer.code = function(code, infostring){
+    const lang = (infostring || '').trim().split(/\s+/)[0];
+    let highlighted, label = lang || 'text';
+    try{
+      if(lang && window.hljs && hljs.getLanguage(lang)){
+        highlighted = hljs.highlight(code, { language: lang }).value;
+      } else if(window.hljs){
+        const auto = hljs.highlightAuto(code);
+        highlighted = auto.value;
+        label = auto.language || 'text';
+      } else {
+        highlighted = escapeHtml(code);
+      }
+    } catch(e){ highlighted = escapeHtml(code); }
+    return '<div class="code-block"><div class="code-bar"><span class="code-lang">' + escapeHtml(label) + '</span></div>'
+      + '<pre class="code-pre"><code class="hljs">' + highlighted + '</code></pre></div>';
+  };
+
+  renderer.table = function(header, body){
+    return '<div class="table-wrap"><table><thead>' + header + '</thead><tbody>' + body + '</tbody></table></div>';
+  };
+  renderer.blockquote = function(quote){ return '<blockquote class="md-quote">' + quote + '</blockquote>'; };
+  renderer.hr = function(){ return '<hr class="md-divider">'; };
+
+  return renderer;
+}
+
+marked.setOptions({ gfm: true, breaks: false, headerIds: false, mangle: false });
+
+/* ============ app state ============ */
+const state = { chapters: [], activeIndex: 0, bookTitle: 'Reader' };
+
+const els = {
+  navScroll: document.getElementById('navScroll'),
+  paper: document.getElementById('paper'),
+  pageNav: document.getElementById('pageNav'),
+  crumbs: document.getElementById('crumbs'),
+  progressChip: document.getElementById('progressChip'),
+  bookTitle: document.getElementById('bookTitle'),
+  bookSub: document.getElementById('bookSub'),
+  chapterCount: document.getElementById('chapterCount'),
+  searchInput: document.getElementById('searchInput'),
+  menuBtn: document.getElementById('menuBtn'),
+  sidebar: document.getElementById('sidebar'),
+  scrim: document.getElementById('scrim'),
+  printBtn: document.getElementById('printBtn'),
+  printRoot: document.getElementById('printRoot')
+};
+
+async function loadLibrary(){
+  let manifest;
+  try{
+    const res = await fetch(MANIFEST_URL, { cache: 'no-store' });
+    if(!res.ok) throw new Error('manifest not found');
+    manifest = await res.json();
+  } catch(e){
+    renderError(
+      'No manifest found',
+      'Create <code>' + CONTENT_DIR + 'manifest.json</code> — a JSON array listing your ' +
+      '.md filenames in reading order, e.g. <code>["intro.md","chapter-1.md"]</code>.'
+    );
+    return;
+  }
+
+  const files = Array.isArray(manifest) ? manifest : (manifest.files || []);
+  if(!files.length){ renderError('No chapters yet', 'Add filenames to <code>' + MANIFEST_URL + '</code>.'); return; }
+
+  if(manifest.title) state.bookTitle = manifest.title;
+  els.bookTitle.textContent = state.bookTitle;
+  els.bookSub.textContent = manifest.subtitle || (files.length + ' file' + (files.length===1?'':'s'));
+
+  const globalSlugs = new Map();
+  const slugify = makeSlugger(globalSlugs);
+  const allChapters = [];
+
+  for(const file of files){
+    let text;
+    try{
+      const r = await fetch(CONTENT_DIR + file, { cache: 'no-store' });
+      if(!r.ok) throw new Error('missing');
+      text = await r.text();
+    } catch(e){
+      allChapters.push({ title: file + ' (failed to load)', markdown: '# ' + file + '\n\n*Could not load this file.*', file });
+      continue;
+    }
+    const fallbackTitle = file.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ');
+    const chs = splitIntoChapters(text, fallbackTitle);
+    chs.forEach(c => allChapters.push(Object.assign(c, { file })));
+  }
+
+  state.chapters = allChapters.map((c, idx) => {
+    const subHeadings = [];
+    const id = slugify(c.title);
+    const renderer = buildRenderer(slugify, subHeadings, id);
+    const html = marked.parse(c.markdown, { renderer });
+    return { index: idx, id, title: c.title, html, subHeadings, file: c.file };
+  });
+
+  buildSidebar();
+  els.chapterCount.textContent = state.chapters.length + ' chapter' + (state.chapters.length===1?'':'s');
+
+  const hashIdx = state.chapters.findIndex(c => c.id === location.hash.replace('#',''));
+  showChapter(hashIdx >= 0 ? hashIdx : 0, false);
+}
+
+function renderError(title, detail){
+  els.navScroll.innerHTML = '<div class="no-results">' + title + '</div>';
+  els.paper.innerHTML = '<div class="empty-state"><div class="glyph">§</div><strong>' + title + '</strong><p style="max-width:38ch;margin:.8rem auto 0;">' + detail + '</p></div>';
+  els.pageNav.innerHTML = '';
+}
+
+function buildSidebar(){
+  let lastFile = null;
+  let html = '';
+  state.chapters.forEach((c, i) => {
+    if(c.file && c.file !== lastFile && new Set(state.chapters.map(x=>x.file)).size > 1){
+      html += '<div class="nav-file-label">' + escapeHtml(c.file) + '</div>';
+      lastFile = c.file;
+    }
+    html += '<li class="nav-chapter" data-index="' + i + '" data-title="' + escapeHtml(c.title.toLowerCase()) + '">'
+      + '<a href="#' + c.id + '"><span class="num">' + String(i+1).padStart(2,'0') + '</span><span>' + escapeHtml(c.title) + '</span></a></li>';
+    if(c.subHeadings.length){
+      html += '<ul class="nav-sub">' + c.subHeadings.filter(h=>h.level===2).map(h =>
+        '<li><a href="#' + h.id + '" data-chapter="' + i + '">' + h.text + '</a></li>'
+      ).join('') + '</ul>';
+    }
+  });
+  els.navScroll.innerHTML = '<ul class="nav-list">' + html + '</ul>';
+
+  els.navScroll.querySelectorAll('.nav-chapter > a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const li = a.closest('.nav-chapter');
+      showChapter(parseInt(li.dataset.index, 10));
+      closeMobileNav();
+    });
+  });
+  els.navScroll.querySelectorAll('.nav-sub a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const idx = parseInt(a.dataset.chapter, 10);
+      const anchorId = a.getAttribute('href').slice(1);
+      showChapter(idx, true, anchorId);
+      closeMobileNav();
+    });
+  });
+}
+
+function showChapter(index, pushHash, scrollToId){
+  if(index < 0 || index >= state.chapters.length) return;
+  state.activeIndex = index;
+  const c = state.chapters[index];
+
+  els.paper.innerHTML = '<div class="md-body">' + c.html + '</div>';
+  els.crumbs.innerHTML = '<strong>' + escapeHtml(state.bookTitle) + '</strong> · ' + escapeHtml(c.title);
+  els.progressChip.textContent = 'Chapter ' + (index+1) + ' of ' + state.chapters.length;
+
+  if(pushHash !== false){
+    history.replaceState(null, '', '#' + (scrollToId || c.id));
+  }
+
+  els.navScroll.querySelectorAll('.nav-chapter').forEach(li => li.classList.toggle('active', parseInt(li.dataset.index,10) === index));
+  els.navScroll.querySelectorAll('.nav-sub a').forEach(a => a.classList.remove('active'));
+
+  const prev = state.chapters[index-1];
+  const next = state.chapters[index+1];
+  els.pageNav.innerHTML =
+    (prev ? '<a class="prev" data-nav="' + prev.index + '"><span class="dir">← Previous</span><span class="ttl">' + escapeHtml(prev.title) + '</span></a>' : '<span class="spacer"></span>') +
+    (next ? '<a class="next" data-nav="' + next.index + '"><span class="dir">Next →</span><span class="ttl">' + escapeHtml(next.title) + '</span></a>' : '');
+  els.pageNav.querySelectorAll('a[data-nav]').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); showChapter(parseInt(a.dataset.nav,10)); window.scrollTo({top:0,behavior:'smooth'}); });
+  });
+
+  if(scrollToId){
+    requestAnimationFrame(() => {
+      const target = document.getElementById(scrollToId);
+      if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+      const link = els.navScroll.querySelector('.nav-sub a[href="#' + scrollToId + '"]');
+      if(link) link.classList.add('active');
+    });
+  } else {
+    window.scrollTo({ top:0, behavior:'auto' });
+  }
+}
+
+/* ---------- search / filter ---------- */
+els.searchInput.addEventListener('input', () => {
+  const q = els.searchInput.value.trim().toLowerCase();
+  const items = els.navScroll.querySelectorAll('.nav-chapter');
+  let visible = 0;
+  items.forEach(li => {
+    const match = !q || li.dataset.title.includes(q);
+    li.style.display = match ? '' : 'none';
+    const sub = li.nextElementSibling && li.nextElementSibling.classList.contains('nav-sub') ? li.nextElementSibling : null;
+    if(sub) sub.style.display = match ? '' : 'none';
+    if(match) visible++;
+  });
+  let existing = els.navScroll.querySelector('.no-results');
+  if(visible === 0){
+    if(!existing){
+      existing = document.createElement('div');
+      existing.className = 'no-results';
+      existing.textContent = 'No chapters match “' + els.searchInput.value + '”.';
+      els.navScroll.appendChild(existing);
+    }
+  } else if(existing){ existing.remove(); }
+});
+
+/* ---------- mobile nav toggle ---------- */
+function openMobileNav(){ els.sidebar.classList.add('open'); els.scrim.classList.add('show'); }
+function closeMobileNav(){ els.sidebar.classList.remove('open'); els.scrim.classList.remove('show'); }
+els.menuBtn.addEventListener('click', openMobileNav);
+els.scrim.addEventListener('click', closeMobileNav);
+
+/* ---------- export whole book as PDF (page break at every H1) ---------- */
+els.printBtn.addEventListener('click', () => {
+  const html = state.chapters.map(c =>
+    '<section class="print-page md-body" id="print-' + c.id + '">' + c.html + '</section>'
+  ).join('');
+  els.printRoot.innerHTML = html;
+  els.printRoot.style.display = 'block';
+  els.paper.style.display = 'none';
+  document.querySelector('.reader-topbar').style.display = 'none';
+  els.pageNav.style.display = 'none';
+  window.print();
+  els.printRoot.style.display = 'none';
+  els.paper.style.display = '';
+  document.querySelector('.reader-topbar').style.display = '';
+  els.pageNav.style.display = '';
+});
+
+loadLibrary();
+</script>
+</body>
+</html>

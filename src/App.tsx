@@ -17,6 +17,7 @@ import PandasDetail from "@/src/pages/PandasDetail";
 import NumpyDetail from "@/src/pages/NumpyDetail";
 import QueueDetail from "@/src/pages/QueueDetail";
 import Courses from "@/src/pages/Courses";
+import NetworksDetail from "@/src/pages/NetworksDetail";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ function AppRoutes() {
       <Route path="/pandas" element={<PandasDetail onBack={() => navigate('/')} />} />
       <Route path="/numpy" element={<NumpyDetail onBack={() => navigate('/')} />} />
       <Route path="/queue" element={<QueueDetail onBack={() => navigate('/')} />} />
+      <Route path="/networks" element={<NetworksDetail onBack={() => navigate('/')} />} />
       <Route path="/courses" element={<Courses onBack={() => navigate('/')} onNavigate={handleNavigate} />} />
       
       {/* Catch-all route renders the Under Construction Challenges page for any missing topics */}
