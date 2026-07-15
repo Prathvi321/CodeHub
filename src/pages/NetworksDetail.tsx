@@ -35,6 +35,16 @@ const PART_MAP: Record<string, { name: string; label: string }> = {
   "Network Part_3.md": { name: "Network Types & Scale", label: "PART III" },
   "Network Part_4.md": { name: "The OSI & TCP/IP Models", label: "PART IV" },
   "Network Part_5.md": { name: "Addressing & Routing", label: "PART V" },
+  "Networl Part_6.md": { name: "DNS & Naming", label: "PART VI" },
+  "Networl Part_7.md": { name: "Governance & Ownership", label: "PART VII" },
+  "Networl Part_8.md": { name: "Companies & Their Roles", label: "PART VIII" },
+  "Networl Part_9.md": { name: "Connection Establishment", label: "PART IX" },
+  "Networl Part_10.md": { name: "Application Layer Protocols", label: "PART X" },
+  "Networl Part_11.md": { name: "Web Mechanics", label: "PART XI" },
+  "Networl Part_12.md": { name: "Security", label: "PART XII" },
+  "Networl Part_13.md": { name: "Surveillance, Privacy & Policy", label: "PART XIII" },
+  "Networl Part_14.md": { name: "Beyond the Web", label: "PART XIV" },
+  "Networl Part_15.md": { name: "Emerging & Future Topics", label: "PART XV" },
 };
 
 function slugify(text: string): string {
@@ -75,6 +85,16 @@ export default function NetworksDetail({ onBack }: NetworksDetailProps) {
           "Network Part_3.md",
           "Network Part_4.md",
           "Network Part_5.md",
+          "Networl Part_6.md",
+          "Networl Part_7.md",
+          "Networl Part_8.md",
+          "Networl Part_9.md",
+          "Networl Part_10.md",
+          "Networl Part_11.md",
+          "Networl Part_12.md",
+          "Networl Part_13.md",
+          "Networl Part_14.md",
+          "Networl Part_15.md",
         ];
 
         const allChapters: Omit<Chapter, "html" | "subHeadings" | "index">[] = [];
@@ -315,7 +335,18 @@ export default function NetworksDetail({ onBack }: NetworksDetailProps) {
   }, {} as Record<number, { partName: string; chapters: Chapter[] }>);
 
   // Colors for dot indicators in the sidebar
-  const dotColors = ["bg-indigo-500", "bg-emerald-500", "bg-amber-500", "bg-rose-500", "bg-purple-500"];
+  const dotColors = [
+    "bg-indigo-500", 
+    "bg-emerald-500", 
+    "bg-amber-500", 
+    "bg-rose-500", 
+    "bg-purple-500",
+    "bg-cyan-500",
+    "bg-pink-500",
+    "bg-violet-500",
+    "bg-teal-500",
+    "bg-orange-500"
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50/40 selection:bg-indigo-100 selection:text-indigo-900 font-sans flex flex-col">
